@@ -6,6 +6,9 @@
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 			<script type="text/javascript" src="benefit.js"></script>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<link rel="stylesheet" type="text/css" href="jquery-ui-1.10.4.custom.css">
+			<script src="jquery-1.10.2.js"></script>
+			<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 			<link rel="stylesheet" type="text/css" href="style.css">
 			<script type="text/javascript">
 
@@ -120,6 +123,17 @@
 				});
 			});
 
+			$(document).ready(function() {
+				$(".datepicker").datepicker( {
+						showOn: "button",
+						buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+						buttonImageOnly: true,
+						changeMonth: true,
+						changeYear: true
+				});
+			});
+
+
 		</script>
 
 	</head>
@@ -185,7 +199,7 @@
 					<legend>Enter Benefit Information</legend>
 						<div align="left">
 							<label for="DOI">Date of Injury</label>
-								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI" size="10" required><br>
+								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI datepicker" size="10" required><br>
 							<label for="AWW">Average Weekly Wage</label>
 								<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7" required ><br>
 							<label for="PWW">Partial Weekly Wage</label>
@@ -193,9 +207,9 @@
 							<label for="compRate">Compensation Rate</label>
 								<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" required> <br>
 							<label for="startDate">Start Date</label>
-								<input type="text" name="Start Date" value="" id="startDate" class="start_date" size="10" required><br>
+								<input type="text" name="Start Date" value="" id="startDate" class="start_date datepicker" size="10" required><br>
 							<label for="endDate">End Date</label>
-								<input type="text" name="End Date" value=""  id="endDate" class="end_date" size="10" maxlength ="10"><br>
+								<input type="text" name="End Date" value=""  id="endDate" class="end_date datepicker" size="10" maxlength ="10"><br>
 							<label for="weeksDue">Weeks Due</label>
 								<input type="text" name="Weeks Due" value="" id="weeksDue" class="weeks_due" size="7" maxlength="7"><br>
 						</div>
