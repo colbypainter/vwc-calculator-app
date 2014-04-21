@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+	<head>
+
+	<title>VWC Calculator App</title>
+			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+			<script type="text/javascript" src="benefit.js"></script>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<link rel="stylesheet" type="text/css" href="style.css">
+			<script type="text/javascript">
+
+			/* Primary Calculation Method */
+			$(document).ready(function() {
+				$(".benefit_row").on('submit', function() {
+					var ben = new benefit();
+					ben.benType = $(this).find(".type_of_benefit option:selected").first().val();
+				    ben.DOI = $(this).find("._DOI").first().val();
+				    ben.startDate = $(this).find(".start_date").first().val();
+				    ben.endDate = $(this).find(".end_date").first().val();
+				    ben.bodyPart = $(this).find(".body_part_type option:selected").first().val();
+				    ben.percentLoss = $(this).find(".percent_loss").first().val();
+				    ben.AWW = $(this).find(".A_WW").first().val();
+				    ben.PWW = $(this).find(".P_WW").first().val();
+				    ben.weeksDue = $(this).find(".weeks_due").first().val();
+				    ben.compRate = $(this).find(".comp_rate").first().val();
+				    ben.calc();
+				    
+				    $(this).find(".end_date").first().val(ben.endDate);
+				    $(this).find(".weeks_due").first().val(ben.weeksDue);
+				    $(this).find(".compensation_due").first().val(ben.getCompDue());
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					var paid = $(this).closest(".benefit_row").find(".compensation_paid").first().val();
+					$(this).closest(".benefit_row").find(".difference").first().val(getDiff(compDue, paid));
+				    
+				    return false;
+				});
+			});
+
+			/* Set Comp Rate based on AWW & PWW */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".A_WW,.P_WW", function() {
+					var ben = new benefit();
+					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
+					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
+					ben.setCompRate();
+					$(this).closest(".benefit_row").find(".comp_rate").first().val(ben.compRate);
+
+					return false;
+				});
+			});
+
+			/* Disable or enable form elements based on the type of Benefit chosen.  Need to account for PWW not clearing out */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".type_of_benefit", function() {
+					var benefitType = $(this).closest(".benefit_row").find(".type_of_benefit option:selected").first().val();
+					switch (benefitType) {
+						case "TT":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", true).val("");
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
+
+						break;
+
+						case "PP":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", true).val("");
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", false);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", false);
+
+						break;
+
+						case "TP":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", false);
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
+
+						return false;
+
+					}
+
+				});
+			});
+
+			/* Calculates difference between Comp Paid and Comp Due on fly. Triggered by change in either field */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".compensation_due,.compensation_paid", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					var paid = $(this).closest(".benefit_row").find(".compensation_paid").first().val();
+					$(this).closest(".benefit_row").find(".difference").first().val(getDiff(compDue, paid));
+
+					return false;
+				});
+			});
+
+			/* Clears out End Date, Comp Due, and Diff if the WD is changed, forcing a recalculation. */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".weeks_due", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					if (compDue != "") {
+						$(this).closest(".benefit_row").find(".end_date").first().val("");
+						$(this).closest(".benefit_row").find(".compensation_due").first().val("");
+						$(this).closest(".benefit_row").find(".difference").first().val("");
+
+						return false;
+					}
+				});
+			});
+
+
+			/* Clears out WD Date, Comp Due, and Diff if the End Date is changed, forcing a recalculation. */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".end_date", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					if (compDue != "") {
+						$(this).closest(".benefit_row").find(".weeks_due").first().val("");
+						$(this).closest(".benefit_row").find(".compensation_due").first().val("");
+						$(this).closest(".benefit_row").find(".difference").first().val("");
+
+						return false;
+					}
+				});
+			});
+
+		</script>
+
+	</head>
+
+	<body>
+		<div id="Nav">
+			<ul>
+				<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+				<li><a href="index.html">Main</a></li>
+				<li>Basic Calculator</li>
+				<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+				<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+				<li><a href="interest.html">Interest Calculator</a></li>
+				<li><a href="COLACalc.html">COLA Calculator</a></li>
+			</ul>
+		</div>
+
+	<div id="Container">
+		<div id="Calculator">
+		<h1>Basic Benefit Calculator</h1>
+			<form id="BasicCalcApp" class="benefit_row">
+				<fieldset name="benefitSelect">
+					<legend>Choose a Benefit Type</legend>
+						<div align="left">
+							<select id="typeOfBenefit"  class="type_of_benefit" required>
+								<option value="">Select Benefit Type</option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+							<select id="bodyPartType" class="body_part_type" required>
+								<option value="">Select Body Part</option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+							<label for="percentLoss" id="lossLabel">% Loss</label>
+							<input type="text" name="percentLoss" value="" id="percentLoss" class="percent_loss" maxlength="5" size="5" required>
+					</div>
+				</fieldset>
+				<fieldset name="benefitData">
+					<legend>Enter Benefit Information</legend>
+						<div align="left">
+							<label for="DOI">Date of Injury</label>
+								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI" size="10" required><br>
+							<label for="AWW">Average Weekly Wage</label>
+								<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7" required ><br>
+							<label for="PWW">Partial Weekly Wage</label>
+								<input type="text" name="Partial Weekly Wage" value="" id="PWW" class="P_WW" size="7" maxlength="7" disabled="disabled"><br>
+							<label for="compRate">Compensation Rate</label>
+								<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" required> <br>
+							<label for="startDate">Start Date</label>
+								<input type="text" name="Start Date" value="" id="startDate" class="start_date" size="10" required><br>
+							<label for="endDate">End Date</label>
+								<input type="text" name="End Date" value=""  id="endDate" class="end_date" size="10" maxlength ="10"><br>
+							<label for="weeksDue">Weeks Due</label>
+								<input type="text" name="Weeks Due" value="" id="weeksDue" class="weeks_due" size="7" maxlength="7"><br>
+						</div>
+						<div align="right">
+							<label for="compensationDue">Compensation Due</label>
+							<input type="text" id="compensationDue" class="compensation_due" size="12" readonly><br>
+							<label for="compensationPaid">Compensation Paid</label>
+							<input type="text" id="compensationPaid" class="compensation_paid" size="12" maxlength=12><br>
+							<label for="difference">Difference</label>
+							<input type="text" id="difference" class="difference" size="12" readonly>
+						</div>
+				</fieldset>
+				<input type="submit" name="calculate" value="Calculate">
+				<input type="reset" name="reset" value="Reset Form">
+		</form>
+
+	</div>
+		
+	</div>
+	</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+	<head>
+
+	<title>VWC Calculator App</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+
+<body>
+
+	<div id="Nav">
+		<ul>
+			<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+			<li><a href="index.html">Main</a></li>
+			<li><a href="BasicCalc.html">Basic Calculator</a></li>
+			<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+			<li>Calculate Lump Sum</li>
+			<li><a href="interest.html">Interest Calculator</a></li>
+			<li><a href="COLACalc.html">COLA Calculator</a></li>
+		</ul>
+	</div>
+
+<div id="Container">
+	<div id="Calculator">
+	<h1>Lump Sum Benefit Calculator</h1>
+		<form id="LSCalcApp">
+			<fieldset name="requiredFields">
+				<legend>Enter Required Benefit Info</legend>
+					<div align="left">
+						
+						<label for="DOI">Accident Date</label>
+						<input type="text" name="DOI" value="" id="DOI" maxlength="10" size="10" required><br>
+
+						<label for="startDate">Start Date</label>
+						<input type="text" name="startDate" value="" id="startDate" maxlength="10" size="10" required><br>
+
+						<label for="PPWksAwarded">PP Weeks Awarded</label>
+						<input type="text" name="PPWksAwarded" value="" id="PPWksAwarded" maxlength="7" size="7" required><br>
+
+						<label for="compRate">Compensation Rate</label>
+						<input type="text" name="compRate" value="" id="compRate" maxlength="7" size="7" required><br>
+
+						<label for="requestDate">Lump Sum Request Date</label>
+						<input type="text" name="requestDate" value="" id="requestDate" maxlength="10" size="10" required><br>
+						<input type="button" name="calculate" value="Calculate" onclick="Calculate()">
+					</div>
+			</fieldset>
+
+			<fieldset name="benefitData">
+				<legend>Lump Sum Details</legend>
+					<div align="right">
+						<label for="PPWksAccrued">PP Weeks Accrued</label>
+							<input type="text" name="PPWksAccrued" value="" id="PPWksAccrued" maxlength = "7" size="12" readonly><br>
+
+						<label for="throughDate">Through Date</label>
+							<input type="text" name="throughDate" value="" id="throughDate" size="12" maxlength="10" readonly><br>
+
+						<label for="lumpSumWks">Lump Sum Weeks</label>
+							<input type="text" name="lumpSumWks" value="" id="lumpSumWks" size="12" maxlength="7" readonly><br>
+
+						<label for="discountedRate">Discount Compensation Rate</label>
+							<input type="text" name="discountedRate" value=""  id="discountedRate" size="12" maxlength="7" readonly><br>
+
+						<label for="LSAmount">Lump Sum Amount</label>
+							<input type="text" name="LSAmount" value="" id="LSAmount" size="12" readonly><br>
+
+						<label for="discount">Discount Amount</label>
+							<input type="text" name="discount" value=""  id="discount" size="12" readonly><br>
+							
+							<input type="reset" name="reset" value="Reset Form">
+					</div>
+
+			</fieldset>
+	</form>
+
+	<script>
+
+
+
+		/* Calculates Weeks due when given a start and end date of period. Accounts for DST. Rounds to 4 decimal places.*/
+		function weeksBetweenDates(x, y) {
+		    var beginDate = new Date(x);
+		    var endingDate = new Date(y);
+		    beginDate = beginDate.getTime();
+		    endingDate = endingDate.getTime();
+		    var daysDue = endingDate - beginDate;
+		    daysDue = daysDue/1000/60/60/24;
+		    daysDue = Math.round(daysDue);
+		    daysDue = daysDue + 1;
+		    var weeksDue = daysDue/7;
+		    weeksDue = Math.round(weeksDue*10000)/10000;
+		    return weeksDue;
+		}
+
+		/* Main function called by Calculate button.*/
+
+		function Calculate() {
+			/* Calculate through Date based on Request Date */
+			var throughDate = getThroughDate(document.getElementById("requestDate").value);
+			document.getElementById("throughDate").value = formatDate(throughDate);
+
+			/* Get number of weeks accrued: Weeks between Start Date and Through Date  */
+			var startDate = document.getElementById("startDate").value;
+			var PPAccrued = weeksBetweenDates(startDate, throughDate);
+			document.getElementById("PPWksAccrued").value = PPAccrued;
+
+			/* Get number of Lump Sum weeks: PP Weeks Awarded - Weeks Accrued */
+			var PPAwarded = document.getElementById("PPWksAwarded").value;
+			var LSWeeksDue = PPAwarded - PPAccrued;
+			LSWeeksDue = Math.round(LSWeeksDue * 10000)/10000;
+			document.getElementById("lumpSumWks").value = LSWeeksDue;
+
+			/* Get lump sum amount */
+			document.getElementById("LSAmount").value = getLSAmount(LSWeeksDue, document.getElementById("compRate").value);
+
+			/* Get discount amount by taking difference of non-discounted comp and discounted comp */
+			document.getElementById("discount").value = getDiscountAmount(document.getElementById("LSAmount").value);
+
+			/* Get discounted compensation rate */
+			var discountCompRate = document.getElementById("LSAmount").value / document.getElementById("lumpSumWks").value;
+			discountCompRate = Math.round(discountCompRate * 100)/100;
+			document.getElementById("discountedRate").value = discountCompRate;
+
+		}
+
+		function getDiscountAmount(x) {
+			var LSAmount = x;
+			var fullAmount = document.getElementById("compRate").value * document.getElementById("lumpSumWks").value;
+			discountAmount = fullAmount - LSAmount;
+			discountAmount = Math.round(discountAmount * 100)/100;
+			return discountAmount;
+		}
+
+		function getLSAmount(x, y) {
+			var weeklyDiscountRate = (Math.pow(1.04, (7/365))) - 1;
+			var discountedWeeksDue = Math.pow((1 + weeklyDiscountRate) , x);
+			var LSAmount = (1 - 1/discountedWeeksDue)/weeklyDiscountRate;
+			LSAmount = LSAmount * y;
+			LSAmount = Math.floor(LSAmount * 100)/100;
+			return LSAmount;
+		}
+
+
+
+		function getThroughDate(x) {
+			var throughDate = new Date(x);
+			throughDate.setDate(throughDate.getDate() - 1);
+			return throughDate;
+		}
+
+
+
+		/* Formats Date for output to form */
+		function formatDate(x) {
+			var d = new Date(x);
+			var date = d.getDate();
+			var month = d.getMonth();
+			month = month + 1;
+			var year = d.getFullYear();
+			d = month + "/" + date + "/" + year;
+			return d;
+		}
+
+
+
+	</script>
+
+</div>
+	
+</div>
+</body>
+</html>

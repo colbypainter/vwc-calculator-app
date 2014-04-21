@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+
+	<head>
+		<title>VWC Calculator App</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="benefit.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" href="jquery-ui-1.10.4.custom.css">
+		<script src="jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript">
+
+		$(document).ready(function() {
+			$("#interest-calc").on("submit", function() {
+				var ben = new benefit();
+				ben.DOI = $(this).find("#DOI").first().val();
+				ben.startDate = $(this).find("#start-date").first().val();
+				ben.endDate = $(this).find("#end-date").first().val();
+				ben.weeksDue = ben.setWeeksDueWithDates();
+				ben.compRate = $(this).find("#comp-rate").first().val();
+
+				/* Write Weeks Due to the form */
+				$(this).find("#weeks-due").first().val(ben.weeksDue);
+
+				/* NOTE: FIND OUT WHAT THE INTEREST RATES ARE BY YEAR. LEGACY ONES CHANGE, CASPER DOESN'T. */
+				var interestRate = 0.00016438;
+				$(this).find("#interest-rate").first().val(interestRate);
+
+				/* Calculate Due at Opinion and write it to the form */
+				var dueAtOpinion = Math.round(ben.weeksDue * ben.compRate * 100)/100;
+				$(this).find("#due-at-opinion").first().val(dueAtOpinion);
+
+				/* Calculate Daily Rate and write to form */
+				var dailyRate = Math.round(ben.compRate / 7 * 100)/100;
+				$(this).find("#daily-rate").first().val(dailyRate);
+
+				/* Calculate days delayed and write to form. Delay = Date of Opinion - Date Paid */
+				var delay = new benefit();
+				delay.startDate = $(this).find("#opinion-date").first().val(); 
+				delay.endDate = $(this).find("#paid-date").first().val();
+				var daysDelayed = Math.round(delay.setWeeksDueWithDates()*7) - 1;
+				$(this).find("#days-delayed").first().val(daysDelayed);
+
+				/* Interest Due = Days Delayed * Interest Rate */
+				var interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
+				$(this).find("#interest-due").first().val(interest);
+
+				/* Total Comp = Due At Opinion + Interest */
+				var totalComp = Math.round((dueAtOpinion + interest)*100)/100;
+				$(this).find("#total-comp-due").first().val(totalComp);
+
+
+				return false;
+
+			});
+
+				$("#interest-calc").on("change", "#DOI,#start-date,#end-date,#comp-rate,#opinion-date,#paid-date", function() {
+					var compDue = $(this).closest("#interest-calc").find("#total-comp-due").first().val();
+					if (compDue != "") {
+						$(this).closest("#interest-calc").find("#weeks-due").first().val("");
+						$(this).closest("#interest-calc").find("#interest-rate").first().val("");
+						$(this).closest("#interest-calc").find("#due-at-opinion").first().val("");
+						$(this).closest("#interest-calc").find("#daily-rate").first().val("");
+						$(this).closest("#interest-calc").find("#days-delayed").first().val("");
+						$(this).closest("#interest-calc").find("#interest-due").first().val("");
+						$(this).closest("#interest-calc").find("#total-comp-due").first().val("");
+					}
+				});
+
+
+				$(".datepicker").datepicker( {
+						showOn: "button",
+						buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+						buttonImageOnly: true,
+						changeMonth: true,
+						changeYear: true
+				});
+
+		});
+		</script>
+
+	</head>
+
+<body>
+
+	<div id="Nav">
+		<ul>
+			<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+			<li><a href="index.html">Main</a></li>
+			<li><a href="BasicCalc.html">Basic Calculator</a></li>
+			<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+			<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+			<li>Interest Calculator</li>
+			<li><a href="COLACalc.html">COLA Calculator</a></li>
+		</ul>
+	</div>
+
+<div id="Container">
+	<div id="Calculator" style="height: 535px">
+	<h1>Interest Calculator</h1>
+		<form id="interest-calc">
+			<fieldset name="requiredFields">
+				<legend>Enter Required Benefit Info</legend>
+					<div align="left">
+						
+						<label for="DOI">Accident Date</label>
+						<input type="text" name="DOI" class="datepicker" value="" id="DOI" maxlength="10" size="10" required><br>
+
+						<label for="start-date">Benefit Start Date</label>
+						<input type="text" name="start-date" class="datepicker" value="" id="start-date" maxlength="10" size="10" required><br>
+
+						<label for="endDate">Benefit End Date</label>
+						<input type="text" name="end-date" class="datepicker" value="" id="end-date" maxlength="10" size="10" required><br>
+
+						<label for="compRate">Compensation Rate</label>
+						<input type="text" name="comp-rate" value="" id="comp-rate" maxlength="7" size="7" required><br>
+
+						<label for="opinion-date">Date of Opinion</label>
+						<input type="text" name="opinion-date" class="datepicker" value="" id="opinion-date" maxlength="10" size="10" required><br>
+
+						<label for="paid-date">Date Paid</label>
+						<input type="text" name="paid-date" class="datepicker" value="" id="paid-date" maxlength="10" size="10" required><br>
+				<input type="submit" name="calculate" value="Calculate">
+					</div>
+			</fieldset>
+
+
+			<fieldset name="interestData">
+				<legend>Interest Details</legend>
+					<div align="right">
+						<label for="weeks-due">Weeks Due</label>
+							<input type="text" name="weeks-due" value="" id="weeks-due" maxlength = "7" size="15" readonly><br>
+
+						<label for="interest-rate">Daily Interest Rate</label>
+							<input type="text" name="interest-rate" value="" id="interest-rate" size="15" maxlength="10" readonly><br>
+
+						<label for="due-at-opinion">Due At Opinion</label>
+							<input type="text" name="due-at-opinion" value="" id="due-at-opinion" size="15" maxlength="15" readonly><br>
+
+						<label for="daily-rate">Daily Rate</label>
+							<input type="text" name="daily-rate" value=""  id="daily-rate" size="15" maxlength="7" readonly><br>
+
+						<label for="days-delayed">Days Delayed</label>
+							<input type="text" name="days-delayed" value="" id="days-delayed" size="15" readonly><br>
+
+						<label for="interest-due">Interest Due</label>
+							<input type="text" name="interest-due" value=""  id="interest-due" size="15" readonly><br>
+
+						<label for="total-comp-due">Total Compensation Due</label>
+							<input type="text" name="total-comp-due" value="" id="total-comp-due" size="15" readonly><br>
+						<input type="reset" name="reset" value="Reset Form">
+					</div>
+			</fieldset>
+	</form>
+
+</div>
+	
+</div>
+</body>
+</html>

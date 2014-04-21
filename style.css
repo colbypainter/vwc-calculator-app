@@ -1,0 +1,156 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #2570a8;	
+}
+
+h1, h2, h3, h4, h5 {
+	color:#2570a8;
+	font-weight: bold;
+	font-style: normal;
+}
+
+input {
+	background-color: #DEEDFC;
+	text-align: right;
+}
+
+input:focus {
+	border: 2px solid #2570a8;
+}
+
+fieldset {
+	border: 1;
+}
+
+
+#Container {
+	border: none;
+	height: auto;
+	width: 100%;
+	position: absolute;
+	top:20px;
+	left: 275px;
+	margin: 0px auto;
+	text-align: center;
+}
+
+#Container label {
+	color: #2570a8;
+	font-weight: normal;
+}
+
+#Nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	border: none;
+	color: blue;
+	width: 245px;
+	height: auto;
+	margin: 0px auto;
+	background-color: #F1F8FF;
+}
+
+.main ul li {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+ul li {
+border: 2px solid #2570a8;
+border-radius: 35px;
+background-color: #2570a8;
+color: #F1F8FF;
+padding: 10px;
+width: 200px;
+margin: 10px;
+}
+
+ul li a{
+text-decoration: none;
+color: #F1F8FF;
+font-weight: bold;
+padding: 10px;
+}
+
+.accordion {
+	color: #2570a8;
+	height: 180px;
+	width: 225px;
+	overflow: auto;
+	margin: 0px auto;
+	font-size: 14px;
+}
+
+
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid #2570a8;
+
+}
+
+.ui-datepicker {
+	font-size: 10px;
+}
+
+
+#Calculator {
+	background-color: #F1F8FF;
+	color:#2570a8;
+	border: 1px solid blue;
+	border-radius: 35px; 
+	width: 700px;
+	height: 480px;
+}
+
+legend {
+	color: #2570a8;
+	font-weight: bold;
+}
+
+#CommentForm {
+	width: 100px;
+	height: auto;
+}
+
+.line_benefit {
+	display:inline;
+	float:left;
+}
+.line_benefit label{
+	display: block;
+	font-size: 65%;
+	text-align: center;
+}
+
+.line_benefit input{
+	font-size: 65%;
+	border: 1px solid #2570a8;
+}
+
+.line_benefit input:focus {
+	border: 2px solid #2570a8;
+}
+
+.benefit_row {
+	clear: left;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#total-row {
+	font-size: 80%;
+	text-align: right;
+	margin-right: 15px;
+}

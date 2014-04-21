@@ -1,0 +1,1027 @@
+<!doctype html>
+	<html>
+		<head>
+
+		<title>VWC Calculator App</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="benefit.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" href="jquery-ui-1.10.4.custom.css">
+		<script src="jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript">
+
+			/* Primary Calculation Method */
+			$(document).ready(function() {
+				$(".benefit_row").on('submit', function() {
+					var ben = new benefit();
+					ben.benType = $(this).find(".type_of_benefit option:selected").first().val();
+				    ben.DOI = $(this).find("._DOI").first().val();
+				    ben.startDate = $(this).find(".start_date").first().val();
+				    ben.endDate = $(this).find(".end_date").first().val();
+				    ben.bodyPart = $(this).find(".body_part_type option:selected").first().val();
+				    ben.percentLoss = $(this).find(".percent_loss").first().val();
+				    ben.AWW = $(this).find(".A_WW").first().val();
+				    ben.PWW = $(this).find(".P_WW").first().val();
+				    ben.weeksDue = $(this).find(".weeks_due").first().val();
+				    ben.compRate = $(this).find(".comp_rate").first().val();
+				    ben.calc();
+				    
+				    $(this).find(".end_date").first().val(ben.endDate);
+				    $(this).find(".weeks_due").first().val(ben.weeksDue);
+				    $(this).find(".compensation_due").first().val(ben.getCompDue());
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					var paid = $(this).closest(".benefit_row").find(".compensation_paid").first().val();
+					$(this).closest(".benefit_row").find(".difference").first().val(getDiff(compDue, paid));
+				    updateTotals();
+
+				    return false;
+				});
+			});
+
+			/* Set Comp Rate based on AWW & PWW */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".A_WW,.P_WW", function() {
+					var ben = new benefit();
+					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
+					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
+					ben.setCompRate();
+					$(this).closest(".benefit_row").find(".comp_rate").first().val(ben.compRate);
+
+					return false;
+				});
+			});
+
+			/* Disable or enable form elements based on the type of Benefit chosen.  Need to account for PWW not clearing out */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".type_of_benefit", function() {
+					var benefitType = $(this).closest(".benefit_row").find(".type_of_benefit option:selected").first().val();
+					switch (benefitType) {
+						case "TT":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", true).val("");
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
+
+						break;
+
+						case "PP":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", true).val("");
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", false);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", false);
+
+						break;
+
+						case "TP":
+							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", false);
+							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
+							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
+
+					}
+
+				});
+			});
+
+			/* Calculates difference between Comp Paid and Comp Due on fly. Triggered by change in either field */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".compensation_due,.compensation_paid", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					var paid = $(this).closest(".benefit_row").find(".compensation_paid").first().val();
+					$(this).closest(".benefit_row").find(".difference").first().val(getDiff(compDue, paid));
+				});
+				updateTotals();
+			});
+
+			/* Clears out End Date, Comp Due, and Diff if the WD is changed after Comp Due has been calc'd, forcing a recalculation. */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".weeks_due", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					if (compDue != "") {
+						$(this).closest(".benefit_row").find(".end_date").first().val("");
+						$(this).closest(".benefit_row").find(".compensation_due").first().val("");
+						$(this).closest(".benefit_row").find(".difference").first().val("");
+					}
+					updateTotals();
+				});
+			});
+
+
+			/* Clears out WD Date, Comp Due, and Diff if the End Date is changed after Compe due has been calc'd, forcing a recalculation. */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".end_date", function() {
+					var compDue = $(this).closest(".benefit_row").find(".compensation_due").first().val();
+					if (compDue != "") {
+						$(this).closest(".benefit_row").find(".weeks_due").first().val("");
+						$(this).closest(".benefit_row").find(".compensation_due").first().val("");
+						$(this).closest(".benefit_row").find(".difference").first().val("");
+					}
+					updateTotals();
+				});
+			});
+
+			function getTotal(classToSum) {
+				var sum = 0;
+				$(classToSum).each(function() {
+					sum = sum + Number(this.value);
+				});
+				return sum;
+			}
+
+			function updateTotals() {
+					$("#Container").find("#total-wd").first().val(getTotal(".weeks_due"));
+					if ($("#Container").find("#total-wd").first().val() >= "500") {
+						$("#Container").find("#total-wd").first().css("background-color", "red");
+					} else {
+						$("#Container").find("#total-wd").first().css("background-color", "#DEEDFC");
+					};
+					$("#Container").find("#total-due").first().val(getTotal(".compensation_due"));
+					$("#Container").find("#total-paid").first().val(getTotal(".compensation_paid"));
+					$("#Container").find("#total-diff").first().val(getTotal(".difference"));
+			}
+
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".weeks_due,.compensation_due,.compensation_paid,.difference", function() {
+					updateTotals();
+				});
+			});
+
+			/* This will fire before the form actually resets, so below function clears those fields in order to update totals. */
+			$(document).ready(function() {
+				$(".benefit_row").on("reset", function() {
+					$(this).closest(".benefit_row").find(".compensation_due").first().val("");
+					$(this).closest(".benefit_row").find(".difference").first().val("");
+					$(this).closest(".benefit_row").find(".weeks_due").first().val("");
+					$(this).closest(".benefit_row").find(".compensation_paid").first().val("");
+					updateTotals();
+				});
+			});
+
+			$(document).ready(function() {
+				$(".accordion").accordion( {
+					heightStyle: "fill",
+					active: false,
+					collapsible: true
+				});
+			});
+
+		</script>
+		</head>
+
+		<body>
+			<div id="Nav">
+				<ul>
+					<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+					<li><a href="index.html">Main</a></li>
+					<li><a href="BasicCalc.html">Basic Calculator</a></li>
+					<li>Multiple Periods</li>
+					<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+					<li><a href="interest.html">Interest Calculator</a></li>
+					<li><a href="COLACalc.html">COLA Calculator</a></li>
+				</ul>
+				<div class="accordion">
+					<h3>COLA/Max/Min Rates</h3>
+					<table>
+
+					<tr>
+					<th>Year</th>
+					<th>COLA %</th>
+					<th>Max Comp Rate</th>
+					<th>Min Comp Rate</th>
+					</tr>
+
+					<tr>
+					<td>1975</td>
+					<td>0</td>
+					<td>149</td>
+					<td>37.25</td>
+					</tr>
+
+					<tr>
+					<td>1976</td>
+					<td>7.0</td>
+					<td>162</td>
+					<td>40</td>
+					</tr>
+
+					<tr>
+					<td>1977</td>
+					<td>4.8</td>
+					<td>175</td>
+					<td>43.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1978</td>
+					<td>6.8</td>
+					<td>187</td>
+					<td>46.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1979</td>
+					<td>9.0</td>
+					<td>199</td>
+					<td>49.75</td>
+					</tr>
+
+					<tr>
+					<td>1980</td>
+					<td>1.33</td>
+					<td>213</td>
+					<td>53.25</td>
+
+					</tr>
+
+					<tr>
+					<td>1981</td>
+					<td>12.45</td>
+					<td>231</td>
+					<td>57.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1982</td>
+					<td>8.8</td>
+					<td>253</td>
+					<td>63.25</td>
+
+					</tr>
+
+					<tr>
+					<td>1983</td>
+					<td>3.9</td>
+					<td>277</td>
+					<td>69.25</td>
+
+					</tr>
+
+					<tr>
+					<td>1984</td>
+					<td>3.55</td>
+					<td>295</td>
+					<td>73.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1985</td>
+					<td>3.75</td>
+					<td>311</td>
+					<td>77.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1986</td>
+					<td>3.7</td>
+					<td>326</td>
+					<td>81.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1987</td>
+					<td>0.9</td>
+					<td>344</td>
+					<td>86</td>
+
+					</tr>
+
+					<tr>
+					<td>1988</td>
+					<td>4.5</td>
+					<td>362</td>
+					<td>90.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1989</td>
+					<td>4.4</td>
+					<td>382</td>
+					<td>95.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1990</td>
+					<td>4.6</td>
+					<td>404</td>
+					<td>101</td>
+
+					</tr>
+
+					<tr>
+					<td>1991</td>
+					<td>6.1</td>
+					<td>418</td>
+					<td>104.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1992</td>
+					<td>2.95</td>
+					<td>434</td>
+					<td>108.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1993</td>
+					<td>2.9</td>
+					<td>451</td>
+					<td>112.75</td>
+
+					</tr>
+
+					<tr>
+					<td>1994</td>
+					<td>2.6</td>
+					<td>466</td>
+					<td>116.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1995</td>
+					<td>2.7</td>
+					<td>480</td>
+					<td>120</td>
+
+					</tr>
+
+					<tr>
+					<td>1996</td>
+					<td>2.5</td>
+					<td>496</td>
+					<td>124</td>
+
+					</tr>
+
+					<tr>
+					<td>1997</td>
+					<td>3.3</td>
+					<td>513</td>
+					<td>128.25</td>
+
+					</tr>
+
+					<tr>
+					<td>1998</td>
+					<td>1.6</td>
+					<td>534</td>
+					<td>133.5</td>
+
+					</tr>
+
+					<tr>
+					<td>1999</td>
+					<td>1.6</td>
+					<td>567</td>
+					<td>141.75</td>
+
+					</tr>
+
+					<tr>
+					<td>2000</td>
+					<td>2.7</td>
+					<td>606</td>
+					<td>151.5</td>
+
+					</tr>
+
+					<tr>
+					<td>2001</td>
+					<td>3.4</td>
+					<td>645</td>
+					<td>161.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2002</td>
+					<td>1.45</td>
+					<td>681</td>
+					<td>170.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2003</td>
+					<td>2.4</td>
+					<td>691</td>
+					<td>172.75</td>
+
+					</tr>
+
+					<tr>
+					<td>2004</td>
+					<td>1.75</td>
+					<td>706</td>
+					<td>176.5</td>
+
+					</tr>
+
+					<tr>
+					<td>2005</td>
+					<td>3.35</td>
+					<td>736</td>
+					<td>184</td>
+
+					</tr>
+
+					<tr>
+					<td>2006</td>
+					<td>3.45</td>
+					<td>773</td>
+					<td>193.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2007</td>
+					<td>2.45</td>
+					<td>816</td>
+					<td>204</td>
+
+					</tr>
+
+					<tr>
+					<td>2008</td>
+					<td>4.2</td>
+					<td>841</td>
+					<td>210.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2009</td>
+					<td>0.25</td>
+					<td>895</td>
+					<td>223.75</td>
+
+					</tr>
+
+					<tr>
+					<td>2010</td>
+					<td>3.05</td>
+					<td>885</td>
+					<td>221.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2011</td>
+					<td>1.6</td>
+					<td>905</td>
+					<td>226.25</td>
+
+					</tr>
+
+					<tr>
+					<td>2012</td>
+					<td>3.1</td>
+					<td>935</td>
+					<td>233.75</td>
+
+					</tr>
+
+					<tr>
+					<td>2013</td>
+					<td>1.7</td>
+					<td>955</td>
+					<td>238.75</td>
+
+					</tr>
+
+					<tr>
+					<td>2014</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+
+		<div id="Container">
+			<div id="Calculator" style="width: 1020px">
+			<h1>Calculate Multiple Compensation Periods</h1>
+			<div id="legend">
+				<p style="align-left">*Indicates Field is Always Required</p>
+			</div>
+
+			<div id="total-row">
+
+				<span>TOTALS</span><br>
+				<label>Weeks Due
+				<input type="text" value="" id="total-wd" readonly>
+			</label><br>
+
+				<label>Compensation Due
+				<input type="text" value="" id="total-due" readonly>
+			</label><br>
+
+				<label>Compensation Paid
+				<input type="text" value="" id="total-paid" readonly>
+			</label><br>
+
+				<label>Difference
+				<input type="text" value="" id="total-diff" readonly>
+			</label><br>
+
+			</div>
+			<br><br>
+
+			<div id="row-wrap" style="margin-left: 10px">
+				<form class="benefit_row" method="post" action="#">
+					<div class="line_benefit">
+					<label for="type-of-benefit">Benefit<br>Type*</label>
+					<select class="type_of_benefit"  id="type-of-benefit" required style="width:45px">
+						<option> </option>
+						<option value="TT">TT - Temporary Total</option>
+						<option value="PP">PP - Permanent Partial</option>
+						<option value="TP">TP - Temporary Partial</option>
+					</select>
+				</div>
+					<div class="line_benefit">
+					<label for="body-part-type">Body<br>Part</label>
+					<select class="body_part_type" id="body-part-type" required style="width:45px" disabled>
+						<option> </option>
+						<option value="60">Thumb</option>
+						<option value="35">First Finger</option>
+						<option value="30">Second Finger</option>
+						<option value="20">Third Finger</option>
+						<option value="15">Fourth Finger</option>
+						<option value="30">Great Toe</option>
+						<option value="10">Second Toe</option>
+						<option value="10">Third Toe</option>
+						<option value="10">Fourth Toe</option>
+						<option value="10">Fifth Toe</option>
+						<option value="150">Hand</option>
+						<option value="200">Arm</option>
+						<option value="125">Foot</option>
+						<option value="175">Leg</option>
+						<option value="100">Vision</option>
+						<option value="50">Hearing</option>
+						<option value="50">Pneumoconiosis Stage 1</option>
+						<option value="100">Pneumoconiosis Stage 2</option>
+						<option value="300">Pneumoconiosis Stage 3</option>
+						<option value="50">Asbestosis - Stage 1</option>
+						<option value="100">Asbestosis - Stage 2</option>
+						<option value="300">Asbestosis - Stage 3</option>
+						<option value="50">Byssinosis</option>
+						<option value="60">Whole Body</option>
+					</select>
+				</div>
+
+					<div class="line_benefit">
+					<label for="percent-loss" id="lossLabel">Percent<br>Loss</label>
+					<input type="text" name="percentLoss" value = "" class="percent_loss" id="percent-loss" maxlength="5" size="5" required disabled>
+				</div>
+
+					<div class="line_benefit">
+					<label for="date-of-injury">Accident<br>Date*</label>
+						<input type="text" name="Date of Injury" value = "" class="_DOI" id="date-of-injury" size="10" required>
+					</div>
+
+					<div class="line_benefit">
+					<label for="weekly-wage"><br>AWW</label>
+						<input type="text" name="Average Weekly Wage" value = "" class="A_WW" id="weekly-wage" size="7" maxlength="7" required>
+					</div>
+
+					<div class="line_benefit">
+					<label for="partial-wage"><br>PWW</label>
+						<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" id="partial-wage" size="7" maxlength="7" disabled>
+					</div>
+
+					<div class="line_benefit">
+						<label for="comp-rate">Comp<br>Rate*</label>
+						<input type="text" name="Compensation Rate" value = "" class="comp_rate" id="comp-rate" size="7" maxlength="7"  required>
+					</div>
+
+					<div class="line_benefit">
+						<label for="start-date">Start<br>Date*</label>
+						<input type="text" name="Start Date" value = "" class="start_date" id="start-date" size="10" required>
+					</div>
+
+					<div class="line_benefit">
+						<label for="end-date">End<br>Date</label>
+						<input type="text" name="End Date" value = ""  class="end_date" id="end-date" size="10" maxlength ="10" >
+					</div>
+
+					<div class="line_benefit">
+						<label for="weeks-due">Weeks<br>Due</label>
+						<input type="text" name="Weeks Due" value = "" class="weeks_due" id="weeks-due" size="7" maxlength="7">
+					</div>
+
+					<div class="line_benefit">
+						<label for="compensation-due">Comp<br>Due</label>
+						<input type="text" value = "" class="compensation_due" id="compensation-due" readonly size="12" maxlength="12">
+					</div>
+
+					<div class="line_benefit">
+						<label for="compensation-paid">Comp<br>Paid</label>
+						<input type="text" value = "" class="compensation_paid" id="compensation-paid" size="12" maxlength="12">
+					</div>
+
+					<div class="line_benefit">
+						<label for="diff"><br>Difference</label>
+						<input type="text" value = "" class="difference" id="diff" readonly size="12" maxlength="12">
+					</div>
+
+					<div class="line_benefit">
+						<label for="calculate"><br>Action</label>
+						<input type="submit" class = "_calculate" id="calculate" name="calculate" value="Calculate">
+					</div>	
+
+					<div class="line_benefit">
+						<label for="reset"><br><br></label>
+						<input type="reset" id ="reset" class="reset" name="reset" value="Reset">
+					</div>
+				</form>
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class="reset" name="reset" value="Reset">
+						</div>
+					</form>
+
+
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class="reset" name="reset" value="Reset">
+						</div>
+					</form>
+
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class = "reset" name="reset" value="Reset">
+						</div>
+					</form>
+
+
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class = "reset" name="reset" value="Reset">
+						</div>
+					</form>
+					<br>
+					<br>
+				</div>
+			</div>	
+		</div>
+		
+	</body>
+</html>
