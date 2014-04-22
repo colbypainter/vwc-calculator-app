@@ -83,7 +83,7 @@ padding: 10px;
 
 .accordion {
 	color: #2570a8;
-	height: 180px;
+	height: 300px;
 	width: 225px;
 	overflow: auto;
 	margin: 0px auto;
@@ -98,6 +98,13 @@ table {
 table, th, td {
 	border: 1px solid #2570a8;
 
+}
+
+#day-week-ref {
+	padding: 0px;
+	font-size: 12px;
+	width: 100%;
+	text-align: center;
 }
 
 .ui-datepicker {

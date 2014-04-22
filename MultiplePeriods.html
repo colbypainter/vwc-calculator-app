@@ -159,8 +159,8 @@
 			$(document).ready(function() {
 				$(".accordion").accordion( {
 					heightStyle: "fill",
-					active: false,
-					collapsible: true
+					collapsible: true,
+					active: false
 				});
 			});
 
@@ -170,7 +170,6 @@
 		<body>
 			<div id="Nav">
 				<ul>
-					<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
 					<li><a href="index.html">Main</a></li>
 					<li><a href="BasicCalc.html">Basic Calculator</a></li>
 					<li>Multiple Periods</li>
@@ -179,8 +178,39 @@
 					<li><a href="COLACalc.html">COLA Calculator</a></li>
 				</ul>
 				<div class="accordion">
+					<h3>Day-Week Conversion</h3>
+					<table id="day-week-ref">
+						<tr>
+							<th>Days</th>
+							<th>Weeks</th>
+						</tr>
+						<tr>
+							<td>1 Day</td>
+							<td>.14286 Weeks</td>
+						</tr>
+						<tr>
+							<td>2 Days</td>
+							<td>.28571 Weeks</td>
+						</tr>
+						<tr>
+							<td>3 Days</td>
+							<td>.42857 Weeks</td>
+						</tr>
+						<tr>
+							<td>4 Days</td>
+							<td>.57143 Weeks</td>
+						</tr>
+						<tr>
+							<td>5 Days</td>
+							<td>.71429 Weeks</td>
+						</tr>
+						<tr>
+							<td>6 Days</td>
+							<td>.85714 Weeks</td>
+						</tr>
+					</table>
 					<h3>COLA/Max/Min Rates</h3>
-					<table>
+					<table id="rate-table">
 
 					<tr>
 					<th>Year</th>
