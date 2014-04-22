@@ -1047,6 +1047,284 @@
 							<input type="reset" class = "reset" name="reset" value="Reset">
 						</div>
 					</form>
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class = "reset" name="reset" value="Reset">
+						</div>
+					</form>
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class = "reset" name="reset" value="Reset">
+						</div>
+					</form>
+
+
+						<form class="benefit_row" method="post" action="#">
+							<div class="line_benefit">
+							<select class="type_of_benefit" required style="width:45px">
+								<option> </option>
+								<option value="TT">TT - Temporary Total</option>
+								<option value="PP">PP - Permanent Partial</option>
+								<option value="TP">TP - Temporary Partial</option>
+							</select>
+						</div>
+							<div class="line_benefit">
+							<select class="body_part_type" required style="width:45px" disabled>
+								<option>  </option>
+								<option value="60">Thumb</option>
+								<option value="35">First Finger</option>
+								<option value="30">Second Finger</option>
+								<option value="20">Third Finger</option>
+								<option value="15">Fourth Finger</option>
+								<option value="30">Great Toe</option>
+								<option value="10">Second Toe</option>
+								<option value="10">Third Toe</option>
+								<option value="10">Fourth Toe</option>
+								<option value="10">Fifth Toe</option>
+								<option value="150">Hand</option>
+								<option value="200">Arm</option>
+								<option value="125">Foot</option>
+								<option value="175">Leg</option>
+								<option value="100">Vision</option>
+								<option value="50">Hearing</option>
+								<option value="50">Pneumoconiosis Stage 1</option>
+								<option value="100">Pneumoconiosis Stage 2</option>
+								<option value="300">Pneumoconiosis Stage 3</option>
+								<option value="50">Asbestosis - Stage 1</option>
+								<option value="100">Asbestosis - Stage 2</option>
+								<option value="300">Asbestosis - Stage 3</option>
+								<option value="50">Byssinosis</option>
+								<option value="60">Whole Body</option>
+							</select>
+						</div>
+
+							<div class="line_benefit">
+							<input type="text" name="percentLoss" value = "" class="percent_loss" maxlength="5" size="5" required disabled>
+						</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Date of Injury" value = "" class="_DOI" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Average Weekly Wage" value = "" class="A_WW" size="7" maxlength="7" required >
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Partial Weekly Wage" value = "" class="P_WW" size="7" maxlength="7" disabled>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Compensation Rate" value = "" class="comp_rate" size="7" maxlength="7" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Start Date" value = "" class="start_date" size="10" required>
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="End Date" value = "" class="end_date" size="10" maxlength ="10">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" name="Weeks Due" value = "" class="weeks_due" size="7" maxlength="7">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_due" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="compensation_paid" size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="text" value = "" class="difference" readonly size="12" maxlength="12">
+							</div>
+
+							<div class="line_benefit">
+								<input type="submit" class = "_calculate" name="calculate" value="Calculate">
+							</div>	
+
+							<div class="line_benefit">
+							<input type="reset" class = "reset" name="reset" value="Reset">
+						</div>
+					</form>
+
 					<br>
 					<br>
 				</div>

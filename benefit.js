@@ -21,7 +21,7 @@ function benefit() {
 
     }
 
-    this.setWeeksDueWithDates = setWeeksDueWithDates; /* passed test. didn't when date passed in wasn't in quotes */
+    this.setWeeksDueWithDates = setWeeksDueWithDates; 
 
     function setWeeksDueWithDates() {
         var startDate = new Date(this.startDate);
@@ -48,7 +48,7 @@ function benefit() {
         return this.compRate;
     }
 
-    this.getCompDue = getCompDue; /* Passed test */
+    this.getCompDue = getCompDue; 
 
     function getCompDue() {
         var compDue = this.weeksDue * this.compRate;
