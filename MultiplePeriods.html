@@ -44,12 +44,37 @@
 			$(document).ready(function() {
 				$(".benefit_row").on("change", ".A_WW,.P_WW", function() {
 					var ben = new benefit();
+					ben.DOI = $(this).closest(".benefit_row").find("._DOI").first().val();
 					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
 					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
 					ben.setCompRate();
 					$(this).closest(".benefit_row").find(".comp_rate").first().val(ben.compRate);
-
+					ben.setCompRateYear(ben.DOI);
+					if (ben.compRate == ben.rates[ben.compRateYear]["MAX"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else if (ben.compRate <= ben.rates[ben.compRateYear]["MIN"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#DEEDFC");
+					}
 					return false;
+				});
+			});
+
+			/* Adjust background of Comp Rate for Max/Min if user changes Comp Rate manually */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".comp_rate", function() {
+					var ben = new benefit();
+					ben.DOI = $(this).closest(".benefit_row").find("._DOI").first().val();
+					ben.compRate = $(this).closest(".benefit_row").find(".comp_rate").first().val();
+					ben.setCompRateYear(ben.DOI);
+					if (ben.compRate == ben.rates[ben.compRateYear]["MAX"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else if (ben.compRate <= ben.rates[ben.compRateYear]["MIN"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#DEEDFC");
+					}
 				});
 			});
 

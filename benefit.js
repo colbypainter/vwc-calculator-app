@@ -11,14 +11,50 @@ function benefit() {
     this.PWW = "";
     this.weeksDue = "";
     this.compRate = "";
+    this.compRateYear = "";
+    this.colaRateYear = "";
 
-    var rates = {
+    this.rates = {
     "1975": {"COLA": "0", "MAX": "149", "MIN": "37.25"},
     "1976": {"COLA": "7", "MAX": "162", "MIN": "40"},
     "1977": {"COLA": "4.8", "MAX": "175", "MIN": "43.75"},
     "1978": {"COLA": "6.8", "MAX": "187", "MIN": "46.75"},
     "1979": {"COLA": "9", "MAX": "199", "MIN": "49.75"},
-
+    "1980": {"COLA": "1.33", "MAX": "213", "MIN": "53.24"},
+    "1981": {"COLA": "12.45", "MAX": "231", "MIN": "57.75"},
+    "1982": {"COLA": "8.8", "MAX": "253", "MIN": "63.25"},
+    "1983": {"COLA": "3.9", "MAX": "277", "MIN": "69.25"},
+    "1984": {"COLA": "3.55", "MAX": "295", "MIN": "73.75"},
+    "1985": {"COLA": "3.75", "MAX": "311", "MIN": "77.75"},
+    "1986": {"COLA": "3.7", "MAX": "326", "MIN": "81.5"},
+    "1987": {"COLA": "0.9", "MAX": "344", "MIN": "86"},
+    "1988": {"COLA": "4.5", "MAX": "362", "MIN": "90.5"},
+    "1989": {"COLA": "4.4", "MAX": "382", "MIN": "95.5"},
+    "1990": {"COLA": "4.6", "MAX": "404", "MIN": "101"},
+    "1991": {"COLA": "6.1", "MAX": "418", "MIN": "104.5"},
+    "1992": {"COLA": "2.95", "MAX": "434", "MIN": "108.5"},
+    "1993": {"COLA": "2.9", "MAX": "451", "MIN": "112.75"},
+    "1994": {"COLA": "2.6", "MAX": "466", "MIN": "116.5"},
+    "1995": {"COLA": "2.7", "MAX": "480", "MIN": "120"},
+    "1996": {"COLA": "2.5", "MAX": "496", "MIN": "124"},
+    "1997": {"COLA": "3.3", "MAX": "513", "MIN": "128.25"},
+    "1998": {"COLA": "1.6", "MAX": "534", "MIN": "133.5"},
+    "1999": {"COLA": "1.6", "MAX": "567", "MIN": "141.75"},
+    "2000": {"COLA": "2.7", "MAX": "606", "MIN": "151.5"},
+    "2001": {"COLA": "3.4", "MAX": "645", "MIN": "161.25"},
+    "2002": {"COLA": "1.45", "MAX": "681", "MIN": "170.25"},
+    "2003": {"COLA": "2.4", "MAX": "691", "MIN": "172.75"},
+    "2004": {"COLA": "1.75", "MAX": "706", "MIN": "176.5"},
+    "2005": {"COLA": "3.35", "MAX": "736", "MIN": "184"},
+    "2006": {"COLA": "3.45", "MAX": "773", "MIN": "193.25"},
+    "2007": {"COLA": "2.45", "MAX": "816", "MIN": "204"},
+    "2008": {"COLA": "4.2", "MAX": "841", "MIN": "210.25"},
+    "2009": {"COLA": "0.25", "MAX": "895", "MIN": "223.75"},
+    "2010": {"COLA": "3.05", "MAX": "885", "MIN": "221.25"},
+    "2011": {"COLA": "1.6", "MAX": "905", "MIN": "226.25"},
+    "2012": {"COLA": "3.1", "MAX": "935", "MIN": "233.75"},
+    "2013": {"COLA": "1.7", "MAX": "955", "MIN": "238.75"},
+    "2014": {"COLA": "", "MAX": "", "MIN": ""},
     }
 
     this.setWeeksDueWithDates = setWeeksDueWithDates; 
@@ -37,14 +73,39 @@ function benefit() {
         return this.weeksDue;
     }
 
+    this.setCompRateYear = setCompRateYear;
+
+    function setCompRateYear(x) {
+        var accDate = new Date(x);
+        var rateYear = accDate.getFullYear();
+        var month = accDate.getMonth() + 1;
+        if (month < 7) {
+            rateYear = rateYear - 1;
+            this.compRateYear = String(rateYear);
+        } else {
+            this.compRateYear = String(rateYear);
+        }
+        return this.compRateYear;
+    }
+
     this.setCompRate = setCompRate;
     function setCompRate() {
-        if ((this.PWW !== "") && (this.AWW !== "")) {
-            this.compRate = (this.AWW - this.PWW) * (2 / 3);
+        var rateYear = setCompRateYear(this.DOI);
+        if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
+            this.compRate = (this.AWW - this.PWW);
         } else {
-            this.compRate = (this.AWW * (2 / 3));
+            if (this.benType = "TP") {
+                this.compRate = (this.AWW - this.PWW) * (2 / 3);
+            } else {
+                this.compRate = (this.AWW * (2 / 3));
+            }
+            this.compRate = Math.round(this.compRate * 100)/100;
+            if (this.compRate > this.rates[rateYear]["MAX"]) {
+                this.compRate = this.rates[rateYear]["MAX"];
+            } else if (this.compRate < this.rates[rateYear]["MIN"]) {
+                this.compRate = this.rates[rateYear]["MIN"];
+            }
         }
-        this.compRate = Math.round(this.compRate * 100)/100;
         return this.compRate;
     }
 
@@ -58,7 +119,7 @@ function benefit() {
 
     }
 
-    this.getWeeksPP = getWeeksPP; /* Passed test, BUT body part needs an associative array */
+    this.getWeeksPP = getWeeksPP; /* Passed test, BUT body part needs to be an array not pulled from HTML */
 
     function getWeeksPP() {
         this.weeksDue = this.bodyPart * (this.percentLoss / 100);
