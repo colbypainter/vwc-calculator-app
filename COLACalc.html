@@ -10,6 +10,23 @@
 		<script src="jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript">
+
+		$(document).ready(function() {
+			$(".cola_calculator").on('submit', function() {
+				var ben = new benefit();
+				ben.DOI = $(this).find("._DOI").first().val();
+				ben.startDate = $(this).find(".start_date").first().val();
+				ben.endDate = $(this).find(".end_date").first().val();
+				ben.compRate = $(this).find(".comp_rate").first().val();
+				ben.getColaPeriods();
+				console.dir(ben);
+
+				return false;
+			});
+		});
+
+		</script>
 	</head>
 
 		<body>
@@ -36,20 +53,20 @@
 
 						<div id="cola-inputs">
 							<span><strong>Enter Benefit Information</strong></span><br>
-								<input type="text" value="" id="accident-date" size="12">
-								<label for="accident-date">Accident Date</label>
+								<input type="text" value="" id="_DOI" size="12">
+								<label for="_DOI">Accident Date</label>
 							<br>
-								<input type="text" value="" id="begin-date" size="12">
-								<label for="begin-date">Begin Date</label>
+								<input type="text" value="" id="start_date" size="12">
+								<label for="start_date">Begin Date</label>
 							<br>
-								<input type="text" value="" id="end-date" size="12">
-								<label for="end-date">End Date</label>
+								<input type="text" value="" id="end_date" size="12">
+								<label for="end_date">End Date</label>
 							<br>
-								<input type="text" value="" id="comp-rate" size="12">
-								<label for="comp-rate">Compensation Rate</label>
+								<input type="text" value="" id="comp_rate" size="12">
+								<label for="comp_rate">Compensation Rate</label>
 							<br>
-								<input type="text" value="" id="cola-paid" size="12">
-								<label for="cola-paid">COLA Paid</label>
+								<input type="text" value="" id="cola_paid" size="12">
+								<label for="cola_paid">COLA Paid</label>
 							<br>
 								<input type="submit" value="Calculate" id="calculate">
 						</div>

@@ -11,8 +11,9 @@ function benefit() {
     this.PWW = "";
     this.weeksDue = "";
     this.compRate = "";
-    this.compRateYear = "";
-    this.colaRateYear = "";
+    this.rateYear = "";
+    this.colaDue = "";
+    this.colaPeriods = {};
 
     this.rates = {
     "1975": {"COLA": "0", "MAX": "149", "MIN": "37.25"},
@@ -73,24 +74,96 @@ function benefit() {
         return this.weeksDue;
     }
 
-    this.setCompRateYear = setCompRateYear;
+    this.getColaPeriods = getColaPeriods;
+    function getColaPeriods() {
+        setRateYear(this.DOI);
+        var startYear = new date(this.startDate);
+        startYear = startYear.getFullYear();
+        var endYear = new date(this.endDate);
+        endYear = endYear.getFullYear();
+        var rateYear = Number(this.rateYear);
+        var begDate = this.startDate;
+        var endDate = this.endDate;
+        var weeksDue = this.weeksDue;
+        var colaDue = this.colaDue;
+        var compRate = this.compRate;
+        var benPeriod = {};
+        var DOI = new Date(this.DOI);
+        var colaYearOne = new Date("07/01/1975");
 
-    function setCompRateYear(x) {
+        if (DOI.getTime() < colaYearOne.getTime()) {
+            this.colaDue = 0;
+        } 
+        if (rateYear < startYear) {
+            while (rateYear < startYear) {
+                begDate = this.startDate;
+                endDate = this.endDate;
+                weeksDue = setWeeksDueWithDates();
+                colaDue = this.rates[rateYear]["COLA"]*(weeksDue)*this.compRate;
+                benPeriod = {
+                    year: rateYear,
+                    begin: begDate,
+                    end: endDate,
+                    wd: weeksDue,
+                    cr: compRate,
+                    cd: colaDue
+                };
+                this.colaPeriods.push(benPeriod);
+                rateYear = rateYear + 1;
+                this.colaDue = this.colaDue + colaDue;
+                this.compRate = (1 + this.rates[rateYear]["COLA"])*this.compRate;
+            } 
+
+        }
+
+        if (rateYear >= startYear && rateYear < endYear) {
+                begDate = this.startDate;
+                var startMonth = begDate.getMonth() + 1;
+                endDate = this.endDate;
+                if (startMonth < 10) {
+                    begDate = "10" + "/" + "01" + "/" + rateYear;
+                    begDate = new Date(begDate);
+                }
+                var keepStartDate = this.startDate;
+                this.startDate = begDate;
+                weeksDue = setWeeksDueWithDates();
+                colaDue = this.rates[rateYear]["COLA"]*(weeksDue)*this.compRate;
+                benPeriod = {
+                    year: rateYear,
+                    begin: begDate,
+                    end: endDate,
+                    wd: weeksDue,
+                    cr: compRate,
+                    cd: colaDue
+                };
+                this.colaPeriods.push(benPeriod);
+                rateYear = rateYear + 1;
+                this.colaDue = this.colaDue + colaDue;
+                this.compRate = (1 + this.rates[rateYear]["COLA"])*this.compRate;
+
+                this.startDate = keepStartDate;
+            }
+    }
+
+
+    this.setRateYear = setRateYear;
+
+    function setRateYear(x) {
         var accDate = new Date(x);
         var rateYear = accDate.getFullYear();
         var month = accDate.getMonth() + 1;
         if (month < 7) {
             rateYear = rateYear - 1;
-            this.compRateYear = String(rateYear);
+            this.rateYear = String(rateYear);
         } else {
-            this.compRateYear = String(rateYear);
+            this.rateYear = String(rateYear);
         }
-        return this.compRateYear;
+        return this.rateYear;
     }
 
     this.setCompRate = setCompRate;
     function setCompRate() {
-        var rateYear = setCompRateYear(this.DOI);
+        var rateYear = setRateYear(this.DOI);
         if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
             this.compRate = (this.AWW - this.PWW);
         } else {
