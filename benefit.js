@@ -74,8 +74,8 @@ function benefit() {
         return this.weeksDue;
     }
 
-    this.getColaPeriods = getColaPeriods;
-    function getColaPeriods() {
+    this.getCola = getCola;
+    function getCola() {
         setRateYear(this.DOI);
         var startYear = new date(this.startDate);
         startYear = startYear.getFullYear();
@@ -95,18 +95,18 @@ function benefit() {
             this.colaDue = 0;
         } 
         if (rateYear < startYear) {
-            while (rateYear < startYear) {
+            while (rateYear > 1974 && rateYear < startYear) {
                 begDate = this.startDate;
                 endDate = this.endDate;
                 weeksDue = setWeeksDueWithDates();
                 colaDue = this.rates[rateYear]["COLA"]*(weeksDue)*this.compRate;
                 benPeriod = {
-                    year: rateYear,
-                    begin: begDate,
-                    end: endDate,
-                    wd: weeksDue,
-                    cr: compRate,
-                    cd: colaDue
+                    "year": rateYear,
+                    "begin": begDate,
+                    "end": endDate,
+                    "wd": weeksDue,
+                    "cr": compRate,
+                    "cd": colaDue
                 };
                 this.colaPeriods.push(benPeriod);
                 rateYear = rateYear + 1;
@@ -124,25 +124,24 @@ function benefit() {
                     begDate = "10" + "/" + "01" + "/" + rateYear;
                     begDate = new Date(begDate);
                 }
-                var keepStartDate = this.startDate;
                 this.startDate = begDate;
                 weeksDue = setWeeksDueWithDates();
                 colaDue = this.rates[rateYear]["COLA"]*(weeksDue)*this.compRate;
                 benPeriod = {
-                    year: rateYear,
-                    begin: begDate,
-                    end: endDate,
-                    wd: weeksDue,
-                    cr: compRate,
-                    cd: colaDue
+                    "year": rateYear,
+                    "begin": begDate,
+                    "end": endDate,
+                    "wd": weeksDue,
+                    "cr": compRate,
+                    "cd": colaDue
                 };
                 this.colaPeriods.push(benPeriod);
                 rateYear = rateYear + 1;
                 this.colaDue = this.colaDue + colaDue;
                 this.compRate = (1 + this.rates[rateYear]["COLA"])*this.compRate;
 
-                this.startDate = keepStartDate;
             }
+            return this.colaDue;
     }
 
 

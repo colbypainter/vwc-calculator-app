@@ -19,7 +19,7 @@
 				ben.startDate = $(this).find(".start_date").first().val();
 				ben.endDate = $(this).find(".end_date").first().val();
 				ben.compRate = $(this).find(".comp_rate").first().val();
-				ben.getColaPeriods();
+				ben.getCola();
 				console.dir(ben);
 
 				return false;
@@ -39,7 +39,7 @@
 					<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
 					<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
 					<li><a href="interest.html">Interest Calculator</a></li>
-					<li>COLA Calculator</a></li>
+					<li>COLA Calculator</li>
 				</ul>
 			</div>
 
@@ -49,7 +49,7 @@
 					<div id="legend">
 						<p style="align-left">ALERT: This Page Remains Under Construction</p>
 					</div>
-					<form id="cola-calculator" method="post" action="#">
+					<form id="cola-calculator">
 
 						<div id="cola-inputs">
 							<span><strong>Enter Benefit Information</strong></span><br>
@@ -138,13 +138,13 @@
 								</div>
 
 								<div class="line_benefit">
-									<label for="weeks-column">Weeks</label>
-									<input type="text" value = "" class="weeks_column" id="weeks-column" size="10"  readonly>
+									<label for="weeks_column">Weeks</label>
+									<input type="text" value = "" class="weeks_column" id="weeks_column" size="10"  readonly>
 								</div>
 
 								<div class="line_benefit">
-									<label for="cola-due">COLA Due</label>
-									<input type="text" value = "" class="cola_due" id="cola-paid" size="12" maxlength="12">
+									<label for="cola_due">COLA Due</label>
+									<input type="text" value = "" class="cola_due" id="cola_due" size="12" maxlength="12">
 								</div>
 
 								</div>
