@@ -55,8 +55,8 @@ function benefit() {
     "2011": {"COLA": "1.6", "MAX": "905", "MIN": "226.25"},
     "2012": {"COLA": "3.1", "MAX": "935", "MIN": "233.75"},
     "2013": {"COLA": "1.7", "MAX": "955", "MIN": "238.75"},
-    "2014": {"COLA": "", "MAX": "", "MIN": ""},
-    }
+    "2014": {"COLA": "", "MAX": "", "MIN": ""}
+    };
 
     this.setWeeksDueWithDates = setWeeksDueWithDates; 
 
@@ -115,7 +115,6 @@ function benefit() {
             } 
 
         }
-
         if (rateYear >= startYear && rateYear < endYear) {
                 begDate = this.startDate;
                 var startMonth = begDate.getMonth() + 1;
@@ -134,6 +133,7 @@ function benefit() {
                     "wd": weeksDue,
                     "cr": compRate,
                     "cd": colaDue
+                    
                 };
                 this.colaPeriods.push(benPeriod);
                 rateYear = rateYear + 1;
@@ -143,7 +143,6 @@ function benefit() {
             }
             return this.colaDue;
     }
-
 
     this.setRateYear = setRateYear;
 
@@ -166,7 +165,7 @@ function benefit() {
         if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
             this.compRate = (this.AWW - this.PWW);
         } else {
-            if (this.benType = "TP") {
+            if (this.benType == "TP") {
                 this.compRate = (this.AWW - this.PWW) * (2 / 3);
             } else {
                 this.compRate = (this.AWW * (2 / 3));
