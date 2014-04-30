@@ -108,7 +108,7 @@ function benefit() {
                     "cd": colaDue
                 };
                 this.colaPeriods.push(benPeriod);
-                rateYear = rateYear + 1;
+                rateYear = String(Number(rateYear) + 1);
                 this.colaDue = this.colaDue + colaDue;
                 this.compRate = (1 + this.rates[rateYear]["COLA"])*this.compRate;
             } 
