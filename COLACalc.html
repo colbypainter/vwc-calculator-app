@@ -13,15 +13,16 @@
 		<script type="text/javascript">
 
 		$(document).ready(function() {
-			$(".cola_calculator").on('submit', function() {
+			$("#cola_calculator").on('submit', function() {
 				var ben = new benefit();
-				ben.DOI = $(this).find("._DOI").first().val();
-				ben.startDate = $(this).find(".start_date").first().val();
-				ben.endDate = $(this).find(".end_date").first().val();
-				ben.compRate = $(this).find(".comp_rate").first().val();
+				ben.DOI = $(this).find("#_DOI").first().val();
+				ben.startDate = $(this).find("#start_date").first().val();
+				ben.endDate = $(this).find("#end_date").first().val();
+				ben.compRate = $(this).find("#comp_rate").first().val();
 				ben.getCola();
+				console.dir(ben);
 
-				$(this).find(".cola_due").first().val(ben.colaDue());
+				$(this).find("#cola_due").first().val(ben.colaDue);
 				return false;
 			});
 		});
@@ -49,7 +50,7 @@
 					<div id="legend">
 						<p style="align-left">ALERT: This Page Remains Under Construction</p>
 					</div>
-					<form id="cola-calculator">
+					<form id="cola_calculator">
 
 						<div id="cola-inputs">
 							<span><strong>Enter Benefit Information</strong></span><br>

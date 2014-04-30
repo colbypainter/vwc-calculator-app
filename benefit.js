@@ -13,7 +13,7 @@ function benefit() {
     this.compRate = "";
     this.rateYear = "";
     this.colaDue = "";
-    this.colaPeriods = {};
+    this.colaPeriods = [];
 
     this.rates = {
     "1975": {"COLA": "0", "MAX": "149", "MIN": "37.25"},
@@ -76,12 +76,11 @@ function benefit() {
 
     this.getCola = getCola;
     function getCola() {
-        setRateYear(this.DOI);
-        var startYear = new date(this.startDate);
+        var rateYear = setRateYear(this.DOI);
+        var startYear = new Date(this.startDate);
         startYear = startYear.getFullYear();
-        var endYear = new date(this.endDate);
+        var endYear = new Date(this.endDate);
         endYear = endYear.getFullYear();
-        var rateYear = Number(this.rateYear);
         var begDate = this.startDate;
         var endDate = this.endDate;
         var weeksDue = this.weeksDue;
