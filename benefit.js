@@ -98,6 +98,7 @@ function benefit() {
                 begDate = this.startDate;
                 endDate = this.endDate;
                 this.setWeeksDueWithDates();
+                compRate = this.compRate;
                 weeksDue = this.weeksDue;
                 colaDue = (this.rates[rateYear]["COLA"]/100)*(weeksDue);
                 benPeriod = {
@@ -126,6 +127,7 @@ function benefit() {
                 }
                 this.startDate = begDate;
                 this.setWeeksDueWithDates();
+                compRate = this.compRate;
                 weeksDue = this.weeksDue;
                 colaDue = this.rates[rateYear]["COLA"]*(weeksDue);
                 benPeriod = {
