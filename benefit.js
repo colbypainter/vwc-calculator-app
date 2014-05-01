@@ -115,10 +115,11 @@ function benefit() {
                             this.endDate = endDate;
                             this.setWeeksDueWithDates();
                             this.endDate = tempEndDate;
+                            compRate = this.compRate;
                             if (Number(prevRate) > Number(this.rates[rateYear]["MAX"])) {
                                 cola = 0;
                             } else {
-                                cola = this.compRate - prevRate;
+                                cola = compRate - prevRate;
                             }
                             colaDue = this.weeksDue * cola;
                             weeksDue = this.weeksDue;
@@ -185,10 +186,11 @@ function benefit() {
                             this.endDate = endDate;
                             this.setWeeksDueWithDates();
                             this.endDate = tempEndDate;
+                            compRate = this.compRate;
                             if (Number(prevRate) > Number(this.rates[rateYear]["MAX"])) {
                                 cola = 0;
                             } else {
-                                cola = this.compRate - prevRate;
+                                cola = compRate - prevRate;
                             }
                             colaDue = this.weeksDue * cola;
                             weeksDue = this.weeksDue;
