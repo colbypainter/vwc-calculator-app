@@ -88,7 +88,7 @@ function benefit() {
         var weeksDue = this.weeksDue;
         var cola = 0;
         var colaDue = this.colaDue;
-        var compRate = this.compRate;
+        var compRate = Number(this.compRate);
         var benPeriod = {};
         var DOI = new Date(this.DOI);
         var colaYearOne = new Date("07/01/1975");
@@ -115,7 +115,7 @@ function benefit() {
                             this.endDate = endDate;
                             this.setWeeksDueWithDates();
                             this.endDate = tempEndDate;
-                            compRate = this.compRate;
+                            compRate = Number(this.compRate);
                             if (Number(prevRate) > Number(this.rates[rateYear]["MAX"])) {
                                 cola = 0;
                             } else {
@@ -148,7 +148,7 @@ function benefit() {
                             begDate = this.startDate;
                             endDate = this.endDate;
                             this.setWeeksDueWithDates();
-                            compRate = this.compRate;
+                            compRate = Number(this.compRate);
                             weeksDue = this.weeksDue;
                             cola = compRate - prevRate;
                             colaDue = cola*(weeksDue);
@@ -186,7 +186,7 @@ function benefit() {
                             this.endDate = endDate;
                             this.setWeeksDueWithDates();
                             this.endDate = tempEndDate;
-                            compRate = this.compRate;
+                            compRate = Number(this.compRate);
                             if (Number(prevRate) > Number(this.rates[rateYear]["MAX"])) {
                                 cola = 0;
                             } else {
@@ -224,7 +224,7 @@ function benefit() {
                             }
                             this.startDate = begDate;
                             this.setWeeksDueWithDates();
-                            compRate = this.compRate;
+                            compRate = Number(this.compRate);
                             weeksDue = this.weeksDue;
                             cola = compRate - prevRate;
                             colaDue = cola*(weeksDue);
