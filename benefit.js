@@ -94,6 +94,11 @@ function benefit() {
         var colaYearOne = new Date("07/01/1975");
         var prevRate = this.compRate;
         var incYear = String(startYear);
+        var tempRateYear = rateYear;
+        var startRateYear = setRateYear(begDate);
+        console.log(startRateYear);
+        this.rateYear = tempRateYear;
+
 
         /* A:0 If Accident Date is before 07/01/75, it is COLA ineligible */
         if (DOI.getTime() < colaYearOne.getTime()) {
@@ -104,7 +109,7 @@ function benefit() {
                 while (rateYear > 1974 && rateYear < startYear) {
                     /* B:1 If rate exceeds maximum allowed for the rate year, use this block to break down into yearly bens*/
                     
-                        while ((this.compRate > this.rates[rateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
+                        while ((this.compRate > this.rates[startRateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
                             begDate = this.startDate;
                             endDate = this.endDate;
                             var endDateDate = new Date(endDate);
@@ -132,7 +137,7 @@ function benefit() {
                                 "comp-rate": compRate,
                                 "cola-due": colaDue,
                                 "previous-rate": prevRate,
-                                "max": this.rates[rateYear]["MAX"],
+                                "max": this.rates[startRateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
                             console.log(benPeriod);
@@ -143,7 +148,7 @@ function benefit() {
                             }
 
                         /* B:2 If rate is below max, run the benefit with same begin and end for each rate year until the start date year */
-                        while ((this.compRate < this.rates[rateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
+                        while ((this.compRate < this.rates[startRateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
                         
                             begDate = this.startDate;
                             endDate = this.endDate;
@@ -161,7 +166,7 @@ function benefit() {
                                 "comp-rate": compRate,
                                 "cola-due": colaDue,
                                 "previous-rate": prevRate,
-                                "max": this.rates[rateYear]["MAX"],
+                                "max": this.rates[startRateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
                             this.colaPeriods.push(benPeriod);
