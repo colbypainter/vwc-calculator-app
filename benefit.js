@@ -55,7 +55,7 @@ function benefit() {
     "2011": {"COLA": "1.6", "MAX": "905", "MIN": "226.25"},
     "2012": {"COLA": "3.1", "MAX": "935", "MIN": "233.75"},
     "2013": {"COLA": "1.7", "MAX": "955", "MIN": "238.75"},
-    "2014": {"COLA": "", "MAX": "", "MIN": ""}
+    "2014": {"COLA": "1.5", "MAX": "967", "MIN": "241.75"}
     };
 
     this.setWeeksDueWithDates = setWeeksDueWithDates; 
@@ -77,11 +77,13 @@ function benefit() {
     this.getCola = getCola;
     function getCola() {
         var rateYear = setRateYear(this.DOI);
+        console.log(rateYear);
         var startYear = new Date(this.startDate);
         startYear = startYear.getFullYear();
         var endYear = new Date(this.endDate);
         endYear = endYear.getFullYear();
         var begDate = this.startDate;
+        var permBegDate = this.startDate;
         var endDate = this.endDate;
         var weeksDue = this.weeksDue;
         var cola = 0;
@@ -91,76 +93,126 @@ function benefit() {
         var DOI = new Date(this.DOI);
         var colaYearOne = new Date("07/01/1975");
         var prevRate = this.compRate;
+        var incYear = String(startYear);
 
+        /* A:0 If Accident Date is before 07/01/75, it is COLA ineligible */
         if (DOI.getTime() < colaYearOne.getTime()) {
             this.colaDue = 0;
         } 
-        if (rateYear < startYear) {
-            while (rateYear > 1974 && rateYear < startYear) {
-                begDate = this.startDate;
-                endDate = this.endDate;
-                this.setWeeksDueWithDates();
-                compRate = this.compRate;
-                weeksDue = this.weeksDue;
-                cola = compRate - prevRate;
-                colaDue = cola*(weeksDue);
-                benPeriod = {
-                    "year": rateYear,
-                    "begin": begDate,
-                    "end": endDate,
-                    "weeks-due": weeksDue,
-                    "cola": cola,
-                    "comp-rate": compRate,
-                    "cola-due": colaDue,
-                    "previous-rate": prevRate,
-                    "max": this.rates[rateYear]["MAX"],
-                    "cola-rate": this.rates[rateYear]["COLA"]
-                };
-                this.colaPeriods.push(benPeriod);
-                rateYear = String(Number(rateYear) + 1);
-                this.colaDue = this.colaDue + colaDue;
-                var colaRate = Number(this.rates[rateYear]["COLA"])/100;
-                prevRate = this.compRate;
-                this.compRate = (1 + colaRate)*this.compRate;
-            } 
+        /* B: Run through each rate year from Accident Date through the beginning of the benefit, generating benefits
+           the full length of the benefit. */
+                while (rateYear > 1974 && rateYear < startYear) {
+                    /* B:1 If rate exceeds maximum allowed for the rate year, use this block to break down into yearly bens*/
+                    
+                        while ((this.compRate > this.rates[rateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
+                            begDate = this.startDate;
+                            endDate = this.endDate;
+                            var endDateDate = new Date(endDate);
+                            if (endDateDate.getFullYear() > Number(rateYear)) {
+                                endDate = "06" + "/" + "30" + "/" + incYear; 
+                            }
+                            var tempEndDate = this.endDate;
+                            this.endDate = endDate;
+                            this.setWeeksDueWithDates();
+                            this.endDate = tempEndDate;
+                            if (Number(prevRate) > Number(this.rates[rateYear]["MAX"])) {
+                                cola = 0;
+                            } else {
+                                cola = this.compRate - prevRate;
+                            }
+                            colaDue = this.weeksDue * cola;
+                            weeksDue = this.weeksDue;
+                            benPeriod = {
+                                "year": rateYear,
+                                "begin": begDate,
+                                "end": endDate,
+                                "weeks-due": weeksDue,
+                                "cola": cola,
+                                "comp-rate": compRate,
+                                "cola-due": colaDue,
+                                "previous-rate": prevRate,
+                                "max": this.rates[rateYear]["MAX"],
+                                "cola-rate": this.rates[rateYear]["COLA"]
+                            };
+                            console.log(benPeriod);
+                            this.colaPeriods.push(benPeriod);
+                            rateYear = String(Number(rateYear) + 1);
+                            this.startDate = "07" + "/" + "01" + "/" + incYear;
+                            incYear = String(Number(incYear) + 1);
+                            }
 
-        }
-        while (rateYear >= startYear && rateYear < endYear) {
-                begDate = this.startDate;
-                var startMonth = new Date(begDate);
-                startMonth = startMonth.getMonth() + 1;
-                endDate = this.endDate;
-                if (startMonth < 10) {
-                    begDate = "10" + "/" + "01" + "/" + rateYear;
+                        /* B:2 If rate is below max, run the benefit with same begin and end for each rate year until the start date year */
+                        while ((this.compRate < this.rates[rateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
+                        
+                            begDate = this.startDate;
+                            endDate = this.endDate;
+                            this.setWeeksDueWithDates();
+                            compRate = this.compRate;
+                            weeksDue = this.weeksDue;
+                            cola = compRate - prevRate;
+                            colaDue = cola*(weeksDue);
+                            benPeriod = {
+                                "year": rateYear,
+                                "begin": begDate,
+                                "end": endDate,
+                                "weeks-due": weeksDue,
+                                "cola": cola,
+                                "comp-rate": compRate,
+                                "cola-due": colaDue,
+                                "previous-rate": prevRate,
+                                "max": this.rates[rateYear]["MAX"],
+                                "cola-rate": this.rates[rateYear]["COLA"]
+                            };
+                            this.colaPeriods.push(benPeriod);
+                            rateYear = String(Number(rateYear) + 1);
+                            this.colaDue = this.colaDue + colaDue;
+                            var colaRate = Number(this.rates[rateYear]["COLA"])/100;
+                            prevRate = this.compRate;
+                            this.compRate = (1 + colaRate)*this.compRate;
+                            } 
+                        }
+            /* C: Iterate through rate years for all years from benefit start year through benefit end year */
+
+            if (rateYear >= startYear && rateYear < endYear) {
+                    begDate = this.startDate;
+                    var startMonth = new Date(begDate);
+                    startMonth = startMonth.getMonth() + 1;
+                    endDate = this.endDate;
+                    if (startMonth < 10) {
+                        begDate = "10" + "/" + "01" + "/" + rateYear;
+                    }
+                    this.startDate = begDate;
+                    this.setWeeksDueWithDates();
+                    compRate = this.compRate;
+                    weeksDue = this.weeksDue;
+                    cola = compRate - prevRate;
+                    colaDue = cola*(weeksDue);
+                    benPeriod = {
+                        "year": rateYear,
+                        "begin": begDate,
+                        "end": endDate,
+                        "weeks-due": weeksDue,
+                        "cola": cola,
+                        "comp-rate": compRate,
+                        "cola-due": colaDue,
+                        "previous-rate": prevRate,
+                        "max": this.rates[rateYear]["MAX"],
+                        "cola-rate": this.rates[rateYear]["COLA"]
+                    };
+                    this.colaPeriods.push(benPeriod);
+                    rateYear = String(Number(rateYear) + 1);
+                    this.colaDue = this.colaDue + colaDue;
+                    var colaRate = Number(this.rates[rateYear]["COLA"])/100;
+                    prevRate = this.compRate;
+                    this.compRate = (1 + colaRate)*this.compRate;
+                    begDate = new Date(begDate);
+                    var begMonth = String(begDate.getMonth() + 1);
+                    var begDay = String(begDate.getDate());
+                    var begYear = String(begDate.getFullYear() + 1);
+                    this.startDate = String(begMonth + "/" + begDay + "/" + begYear);
                 }
-                this.startDate = begDate;
-                this.setWeeksDueWithDates();
-                compRate = this.compRate;
-                weeksDue = this.weeksDue;
-                cola = compRate - prevRate;
-                colaDue = cola*(weeksDue);
-                benPeriod = {
-                    "year": rateYear,
-                    "begin": begDate,
-                    "end": endDate,
-                    "weeks-due": weeksDue,
-                    "cola": cola,
-                    "comp-rate": compRate,
-                    "cola-due": colaDue,
-                    "previous-rate": prevRate,
-                    "max": this.rates[rateYear]["MAX"],
-                    "cola-rate": this.rates[rateYear]["COLA"]
-                };
-                this.colaPeriods.push(benPeriod);
-                rateYear = String(Number(rateYear) + 1);
-                this.colaDue = this.colaDue + colaDue;
-                var colaRate = Number(this.rates[rateYear]["COLA"])/100;
-                prevRate = this.compRate;
-                this.compRate = (1 + colaRate)*this.compRate;
-                begDate = new Date(begDate);
-                var begMonth = String(begDate.getMonth() + 1);
             }
-            return this.colaDue;
+        return this.colaDue;
     }
 
     this.setRateYear = setRateYear;
@@ -290,7 +342,7 @@ function benefit() {
                 
         }
     }
-}
+
 
 
 /* Gets the amount still due after an amount has already been paid  */
