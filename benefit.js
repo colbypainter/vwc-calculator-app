@@ -340,9 +340,9 @@ the full length of the benefit. */
                             this.startDate = String(begMonth + "/" + begDay + "/" + begYear);
                         }
                 }
+                return this.colaDue;
             }
-        return this.colaDue;
-    }
+        
 
     this.setRateYear = setRateYear;
 
@@ -472,7 +472,7 @@ the full length of the benefit. */
         }
     }
 
-
+}
 
 /* Gets the amount still due after an amount has already been paid */
 function getDiff(x,y) {
