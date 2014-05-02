@@ -100,7 +100,10 @@ function benefit() {
         console.log(startRateYear);
         this.rateYear = tempRateYear;
 
-
+        if ((this.compRate > this.rates[startRateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
+            benPeriod = {};
+            this.colaPeriods.push(benPeriod);
+        }
 
         /* A:0 If Accident Date is before 07/01/75, it is COLA ineligible */
         if (DOI.getTime() < colaYearOne.getTime()) {
