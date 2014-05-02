@@ -100,6 +100,9 @@ function benefit() {
         console.log(startRateYear);
         this.rateYear = tempRateYear;
 
+        /* Handles corner case where first year exceeds the max cola. Adds an empty benefit so the resulting array still 
+           begins at [1]
+           */
         if ((this.compRate > this.rates[startRateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
             benPeriod = {};
             this.colaPeriods.push(benPeriod);
@@ -224,7 +227,7 @@ the full length of the benefit. */
 
 
                             rateYear = String(Number(rateYear) + 1);
-                            this.startDate = "07" + "/" + "01" + "/" + incYear;
+                            this.startDate = String(Number(permStartDate.getMonth() + 1)) + "/" + String(permStartDate.getDate()) + "/" + incYear;
                             incYear = String(Number(incYear) + 1);
                             }
 
@@ -368,7 +371,7 @@ the full length of the benefit. */
         if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
             this.compRate = (this.AWW - this.PWW);
         } else {
-            if (this.benType == "TP") {
+            if (this.benType = "TP") {
                 this.compRate = (this.AWW - this.PWW) * (2 / 3);
             } else {
                 this.compRate = (this.AWW * (2 / 3));
