@@ -58,7 +58,7 @@ function benefit() {
     "2014": {"COLA": "1.5", "MAX": "967", "MIN": "241.75"}
     };
 
-    this.setWeeksDueWithDates = setWeeksDueWithDates; 
+    this.setWeeksDueWithDates = setWeeksDueWithDates;
 
     function setWeeksDueWithDates() {
         var startDate = new Date(this.startDate);
@@ -103,9 +103,9 @@ function benefit() {
         /* A:0 If Accident Date is before 07/01/75, it is COLA ineligible */
         if (DOI.getTime() < colaYearOne.getTime()) {
             this.colaDue = 0;
-        } 
+        }
         /* B: Run through each rate year from Accident Date through the beginning of the benefit, generating benefits
-           the full length of the benefit. */
+the full length of the benefit. */
                 while (rateYear > 1974 && rateYear < startYear) {
                     /* B:1 If rate exceeds maximum allowed for the rate year, use this block to break down into yearly bens*/
                     
@@ -114,7 +114,7 @@ function benefit() {
                             endDate = this.endDate;
                             var endDateDate = new Date(endDate);
                             if (endDateDate.getFullYear() > Number(rateYear)) {
-                                endDate = "06" + "/" + "30" + "/" + incYear; 
+                                endDate = "06" + "/" + "30" + "/" + incYear;
                             }
                             var tempEndDate = this.endDate;
                             this.endDate = endDate;
@@ -175,7 +175,7 @@ function benefit() {
                             var colaRate = Number(this.rates[rateYear]["COLA"])/100;
                             prevRate = this.compRate;
                             this.compRate = (1 + colaRate)*this.compRate;
-                            } 
+                            }
                         }
             /* C: Iterate through rate years for all years from benefit start year through benefit end year */
 
@@ -185,7 +185,7 @@ function benefit() {
                             endDate = this.endDate;
                             var endDateDate = new Date(endDate);
                             if (endDateDate.getFullYear() > Number(rateYear)) {
-                                endDate = "06" + "/" + "30" + "/" + incYear; 
+                                endDate = "06" + "/" + "30" + "/" + incYear;
                             }
                             var tempEndDate = this.endDate;
                             this.endDate = endDate;
@@ -298,7 +298,7 @@ function benefit() {
         return this.compRate;
     }
 
-    this.getCompDue = getCompDue; 
+    this.getCompDue = getCompDue;
 
     function getCompDue() {
         var compDue = this.weeksDue * this.compRate;
@@ -318,7 +318,7 @@ function benefit() {
         return this.weeksDue;
     }
 
-    this.getEndDate = getEndDate; 
+    this.getEndDate = getEndDate;
 
     function getEndDate() {
         var beginDate = new Date(this.startDate);
@@ -369,15 +369,15 @@ function benefit() {
                 }
                 break;
 
-            case "PP":                                                
-                if (this.endDate === "" && this.weeksDue === "") {  
+            case "PP":
+                if (this.endDate === "" && this.weeksDue === "") {
                         this.weeksDue = this.getWeeksPP();
                         this.endDate = this.getEndDate();
-                } else if (this.endDate === "" && this.weeksDue !== "") { 
+                } else if (this.endDate === "" && this.weeksDue !== "") {
                         this.endDate = this.getEndDate();
-                } else if (this.endDate !== "" && this.weeksDue === "") {  
-                        this.weeksDue = this.setWeeksDueWithDates();  
-                }                                                   
+                } else if (this.endDate !== "" && this.weeksDue === "") {
+                        this.weeksDue = this.setWeeksDueWithDates();
+                }
             break;
            
             case "TP":
@@ -392,7 +392,7 @@ function benefit() {
 
 
 
-/* Gets the amount still due after an amount has already been paid  */
+/* Gets the amount still due after an amount has already been paid */
 function getDiff(x,y) {
 var compDue = x;
 var paid = y;
@@ -419,5 +419,4 @@ function formatDate(x) {
     d = month + "/" + date + "/" + year;
     return d;
 }
-
 
