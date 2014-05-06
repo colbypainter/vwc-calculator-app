@@ -126,11 +126,6 @@ legend {
 	font-weight: bold;
 }
 
-#CommentForm {
-	width: 100px;
-	height: auto;
-}
-
 .line_benefit {
 	display:inline;
 	float:left;
@@ -167,5 +162,6 @@ legend {
 	text-align: left;
 	margin-left: 15px;
 }
+
 
 
