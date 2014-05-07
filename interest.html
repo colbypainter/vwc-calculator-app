@@ -24,12 +24,22 @@
 				/* Write Weeks Due to the form */
 				$(this).find("#weeks-due").first().val(ben.weeksDue);
 
-				/* NOTE: FIND OUT WHAT THE INTEREST RATES ARE BY YEAR. LEGACY ONES CHANGE, CASPER DOESN'T. */
+				/* Interest rate is 6% annual broken down to daily. Is a constant rate. */
 				var interestRate = 0.00016438;
 				$(this).find("#interest-rate").first().val(interestRate);
 
 				/* Calculate Due at Opinion and write it to the form */
-				var dueAtOpinion = Math.round(ben.weeksDue * ben.compRate * 100)/100;
+				/* Depends on whether Opinion Date is after End Date */
+				var endDate = new Date(ben.endDate);
+				var opDate = $(this).find("#opinion-date").first().val();
+				var dueAtOpinion = 0;
+				opDate = new Date(opDate);
+				if (opDate.getTime() > endDate.getTime()) {
+					dueAtOpinion = Math.round(ben.weeksDue * ben.compRate * 100)/100;
+				} else {
+					var opinionWeeks = getWeeks(String(ben.startDate), opDate);
+					dueAtOpinion = Math.round(opinionWeeks * ben.compRate * 100)/100;
+				}
 				$(this).find("#due-at-opinion").first().val(dueAtOpinion);
 
 				/* Calculate Daily Rate and write to form */
@@ -41,14 +51,31 @@
 				delay.startDate = $(this).find("#opinion-date").first().val(); 
 				delay.endDate = $(this).find("#paid-date").first().val();
 				var daysDelayed = Math.round(delay.setWeeksDueWithDates()*7) - 1;
+				if (daysDelayed < 0) {
+					daysDelayed = 0;
+				}
 				$(this).find("#days-delayed").first().val(daysDelayed);
 
 				/* Interest Due = Days Delayed * Interest Rate */
-				var interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
+				var interest = 0;
+				var paidDate = $(this).find("#paid-date").first().val();
+				paidDate = new Date(paidDate);
+				if (opDate.getTime() > endDate.getTime()) {
+					interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
+				} else if (paidDate.getTime() > opDate.getTime()) {
+					var localWeeks = getWeeks(opDate, endDate);
+					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (localWeeks * (localWeeks + 1)/2));
+					localWeeks2 = getWeeks(endDate, paidDate);
+					var additionalComp = (localWeeks/7) * ben.compRate;
+					interest = interest + (localWeeks2 * additionalComp * interestRate);
+				} else {
+					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (daysDelayed * (daysDelayed + 1)/2));
+				}
+				interest = Math.round(interest*100)/100;
 				$(this).find("#interest-due").first().val(interest);
 
-				/* Total Comp = Due At Opinion + Interest */
-				var totalComp = Math.round((dueAtOpinion + interest)*100)/100;
+				/* Total Compensation */
+				var totalComp = Math.round((ben.weeksDue * ben.compRate)*100)/100;
 				$(this).find("#total-comp-due").first().val(totalComp);
 
 
@@ -148,7 +175,7 @@
 						<label for="interest-due">Interest Due</label>
 							<input type="text" name="interest-due" value=""  id="interest-due" size="15" readonly><br>
 
-						<label for="total-comp-due">Total Due</label>
+						<label for="total-comp-due">Total Compensation</label>
 							<input type="text" name="total-comp-due" value="" id="total-comp-due" size="15" readonly><br>
 						<input type="reset" name="reset" value="Reset Form">
 					</div>
