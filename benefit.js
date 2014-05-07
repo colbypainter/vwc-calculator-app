@@ -370,6 +370,7 @@ the full length of the benefit. */
         var rateYear = setRateYear(this.DOI);
         if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
             this.compRate = (this.AWW - this.PWW);
+            this.compRate = Math.round(this.compRate * 100)/100;
         } else {
             this.compRate = (this.AWW - this.PWW) * (2 / 3);
             this.compRate = Math.round(this.compRate * 100)/100;
