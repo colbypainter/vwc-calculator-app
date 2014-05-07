@@ -62,14 +62,15 @@
 				paidDate = new Date(paidDate);
 				if (opDate.getTime() > endDate.getTime()) {
 					interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
-				} else if (paidDate.getTime() > opDate.getTime()) {
-					var localWeeks = getWeeks(opDate, endDate);
+				} else if (paidDate.getTime() > endDate.getTime()) {
+					var localWeeks = getWeeks(endDate, opDate);
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (localWeeks * (localWeeks + 1)/2));
-					localWeeks2 = getWeeks(endDate, paidDate);
+					localWeeks2 = getWeeks(paidDate, endDate);
 					var additionalComp = (localWeeks/7) * ben.compRate;
 					interest = interest + (localWeeks2 * additionalComp * interestRate);
 				} else {
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (daysDelayed * (daysDelayed + 1)/2));
+					
 				}
 				interest = Math.round(interest*100)/100;
 				$(this).find("#interest-due").first().val(interest);
