@@ -40,26 +40,7 @@
 				});
 			});
 
-			/* Set Comp Rate based on AWW & PWW */
-			$(document).ready(function() {
-				$(".benefit_row").on("change", ".A_WW,.P_WW", function() {
-					var ben = new benefit();
-					ben.DOI = $(this).closest(".benefit_row").find("._DOI").first().val();
-					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
-					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
-					ben.setCompRate();
-					$(this).closest(".benefit_row").find(".comp_rate").first().val(ben.compRate);
-					ben.setRateYear(ben.DOI);
-					if (ben.compRate == ben.rates[ben.rateYear]["MAX"]) {
-						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
-					} else if (ben.compRate <= ben.rates[ben.rateYear]["MIN"]) {
-						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
-					} else {
-						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#DEEDFC");
-					}
-					return false;
-				});
-			});
+
 
 			/* Adjust background of Comp Rate for Max/Min if user changes Comp Rate manually */
 			$(document).ready(function() {
@@ -78,15 +59,23 @@
 				});
 			});
 
-			/* Disable or enable form elements based on the type of Benefit chosen.  Need to account for PWW not clearing out */
+			/* Disable or enable form elements based on the type of Benefit chosen.  Need to account for PWW not clearing out? */
 			$(document).ready(function() {
 				$(".benefit_row").on("change", ".type_of_benefit", function() {
 					var benefitType = $(this).closest(".benefit_row").find(".type_of_benefit option:selected").first().val();
+					var accDate = $("#Container").find("#date-of-injury").first().val();
+					var weeklyWage = $("#Container").find("#weekly-wage").first().val();
+					var comp = weeklyWage * (2/3);
+
 					switch (benefitType) {
 						case "TT":
 							$(this).closest(".benefit_row").find(".P_WW").first().prop("disabled", true).val("");
 							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
 							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
+
+							/* The following three pre-populate Acc Date, Weekly Wage, and Comp from row 1 */
+							$(this).closest(".benefit_row").find("._DOI").first().val(accDate);
+							$(this).closest(".benefit_row").find(".A_WW").first().val(weeklyWage);
 
 						break;
 
@@ -95,6 +84,11 @@
 							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", false);
 							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", false);
 
+							/* The following three pre-populate Acc Date, Weekly Wage, and Comp from row 1 */
+							$(this).closest(".benefit_row").find("._DOI").first().val(accDate);
+							$(this).closest(".benefit_row").find(".A_WW").first().val(weeklyWage);
+
+
 						break;
 
 						case "TP":
@@ -102,8 +96,33 @@
 							$(this).closest(".benefit_row").find(".percent_loss").first().prop("disabled", true);
 							$(this).closest(".benefit_row").find(".body_part_type").first().prop("disabled", true);
 
+							/* The following three pre-populate Acc Date, Weekly Wage, and Comp from row 1 */
+							$(this).closest(".benefit_row").find("._DOI").first().val(accDate);
+							$(this).closest(".benefit_row").find(".A_WW").first().val(weeklyWage);
+
 					}
 
+				});
+			});
+
+			/* Set Comp Rate based on AWW & PWW */
+			$(document).ready(function() {
+				$(".benefit_row").on("change", ".A_WW,.P_WW,.type_of_benefit", function() {
+					var ben = new benefit();
+					ben.DOI = $(this).closest(".benefit_row").find("._DOI").first().val();
+					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
+					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
+					ben.setCompRate();
+					$(this).closest(".benefit_row").find(".comp_rate").first().val(ben.compRate);
+					ben.setRateYear(ben.DOI);
+					if (ben.compRate == ben.rates[ben.rateYear]["MAX"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else if (ben.compRate <= ben.rates[ben.rateYear]["MIN"]) {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#F5AEBE");
+					} else {
+						$(this).closest(".benefit_row").find(".comp_rate").first().css("background-color", "#DEEDFC");
+					}
+					return false;
 				});
 			});
 

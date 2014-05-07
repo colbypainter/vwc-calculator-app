@@ -56,18 +56,21 @@
 				}
 				$(this).find("#days-delayed").first().val(daysDelayed);
 
-				/* Interest Due = Days Delayed * Interest Rate */
+				/* There are three scenarios to calculate Interest Due */
 				var interest = 0;
 				var paidDate = $(this).find("#paid-date").first().val();
 				paidDate = new Date(paidDate);
+				/* Scenario 1: Date of Opinion is after End Date */
 				if (opDate.getTime() > endDate.getTime()) {
 					interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
+				/* Scenario 2: Paid Date is after End Date */
 				} else if (paidDate.getTime() > endDate.getTime()) {
 					var localWeeks = getWeeks(endDate, opDate);
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (localWeeks * (localWeeks + 1)/2));
 					localWeeks2 = getWeeks(paidDate, endDate);
 					var additionalComp = (localWeeks/7) * ben.compRate;
 					interest = interest + (localWeeks2 * additionalComp * interestRate);
+				/* Scenario 3: All remaining scenarios */
 				} else {
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (daysDelayed * (daysDelayed + 1)/2));
 					
