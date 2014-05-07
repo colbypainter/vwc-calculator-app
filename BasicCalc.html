@@ -44,7 +44,7 @@
 				$(".benefit_row").on("change", ".A_WW,.P_WW", function() {
 					var ben = new benefit();
 					ben.DOI = $(this).closest(".benefit_row").find("._DOI").first().val();
-					ben.benType = $(this).find(".type_of_benefit option:selected").first().val();
+					ben.benType = $(this).closest(".benefit_row").find(".type_of_benefit option:selected").first().val();
 					ben.AWW = $(this).closest(".benefit_row").find(".A_WW").first().val();
 					ben.PWW = $(this).closest(".benefit_row").find(".P_WW").first().val();
 					ben.setCompRate();

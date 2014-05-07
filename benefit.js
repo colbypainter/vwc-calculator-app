@@ -371,15 +371,11 @@ the full length of the benefit. */
         if ((this.AWW - this.PWW) < this.rates[rateYear]["MIN"]) {
             this.compRate = (this.AWW - this.PWW);
         } else {
-            if (this.benType = "TP") {
-                this.compRate = (this.AWW - this.PWW) * (2 / 3);
-            } else {
-                this.compRate = (this.AWW * (2 / 3));
-            }
+            this.compRate = (this.AWW - this.PWW) * (2 / 3);
             this.compRate = Math.round(this.compRate * 100)/100;
             if (this.compRate > this.rates[rateYear]["MAX"]) {
                 this.compRate = this.rates[rateYear]["MAX"];
-            } else if (this.compRate < this.rates[rateYear]["MIN"]) {
+            } else if (this.compRate < this.rates[rateYear]["MIN"] && this.benType != "TP") {
                 this.compRate = this.rates[rateYear]["MIN"];
             }
         }
