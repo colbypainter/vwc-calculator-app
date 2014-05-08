@@ -20,6 +20,7 @@
 				ben.endDate = $(this).find("#end_date").first().val();
 				ben.compRate = $(this).find("#comp_rate").first().val();
 				ben.getCola();
+
 				console.log(ben.colaPeriods);
 
 				$(this).find("#cola_due").first().val(ben.colaDue);
@@ -147,6 +148,10 @@
 									<label for="cola_due">COLA Due</label>
 									<input type="text" value = "" class="cola_due" id="cola_due" size="12" maxlength="12">
 								</div>
+
+								</div>
+
+								<div id="results">
 
 								</div>
 							</div>

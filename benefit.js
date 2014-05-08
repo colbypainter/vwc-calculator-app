@@ -77,30 +77,46 @@ function benefit() {
     this.getCola = getCola;
     function getCola() {
         var rateYear = setRateYear(this.DOI);
-        console.log(rateYear);
+        /* startYear is the year of the benefit start date */
         var startYear = new Date(this.startDate);
         startYear = startYear.getFullYear();
+        /* endYear is the year of the benefit end date */
         var endYear = new Date(this.endDate);
         endYear = endYear.getFullYear();
+        /* since start date changes through the function, store the start date here permanently */
         var permStartDate = new Date (this.startDate);
+        /* begDate is the benefit start date. it will change throughout the function */
         var begDate = this.startDate;
+        /* store the begin date here permanently */
         var permBegDate = this.startDate;
+        /* endDate is the benefit end date. it will change throughout the function */
         var endDate = this.endDate;
+        /* pull weeks due from the form */
         var weeksDue = this.weeksDue;
+        /* initialize the cola amount */
         var cola = 0;
+        /* initialize colaDue */
         var colaDue = this.colaDue;
+        /* pull comp rate from the form and convert it to a number */
         var compRate = Number(this.compRate);
+        /* create an empty object to store benefit periods before pushing them to colaPeriods */
         var benPeriod = {};
+        /* initialize the accident date */
         var DOI = new Date(this.DOI);
+        /* no cola benefits are eligible for accidents prior to 07/01/75 */
         var colaYearOne = new Date("07/01/1975");
+        /* initialize previous rate. this will go up throughout the function */
         var prevRate = this.compRate;
+        /* use incYear to iterate the year up in the MAX branch without changing the start date */
         var incYear = String(startYear);
+        /* don't know what tempRateYear is for, should probably kill it */
         var tempRateYear = rateYear;
+        /* get the rate year for the year of the benefit start date */
         var startRateYear = setRateYear(begDate);
-        console.log(startRateYear);
+        /* don't know the purpose here, kill it */
         this.rateYear = tempRateYear;
 
-        /* Handles corner case where first year exceeds the max cola. Adds an empty benefit so the resulting array still 
+        /* Handles edge case where first year exceeds the max cola. Adds an empty benefit so the resulting array still 
            begins at [1]
            */
         if ((this.compRate > this.rates[startRateYear]["MAX"]) && (rateYear > 1974 && rateYear < startYear)) {
@@ -121,12 +137,16 @@ the full length of the benefit. */
                             begDate = this.startDate;
                             endDate = this.endDate;
                             var endDateDate = new Date(endDate);
+                            /* Since we are in the MAX block, this checks to see if the end date is in another year. If 
+                               so, end the benefit at 06/30 of the current year */
                             if (endDateDate.getFullYear() > Number(rateYear)) {
                                 endDate = "06" + "/" + "30" + "/" + incYear;
                             }
                             weeksDue = getWeeks(begDate, endDate);
                             compRate = Number(this.compRate);
                             var effectiveRateYear = "";
+                            /* This will determine what rate to use based on whether the current start date is greater 
+                               than the initial year */
                             if (rateYear > startRateYear) {
                                 effectiveRateYear = rateYear;
                             } else {
@@ -137,7 +157,7 @@ the full length of the benefit. */
                             } else {
                                 cola = compRate - prevRate;
                             }
-                            colaDue = this.weeksDue * cola;
+                            colaDue = weeksDue * cola;
                             
                             benPeriod = {
                                 "year": rateYear,
@@ -157,9 +177,10 @@ the full length of the benefit. */
 
                             /* This block will run the remaining weeks out for the rate year */
                             if (endDateDate.getFullYear() > Number(rateYear)) {
-                                var localWeeks = 0;
+                                /* This won't work, must figure out the while loop criteria */
+                                
                                 var localRateYear = rateYear;
-                                while (localWeeks <= weeksDue) {
+                                while (incYear <= endYear) {
                                     var weeks = 0;
                                     begDate = "07" + "/" + "01" + "/" + incYear;
                                     weeksDue = getWeeks(begDate, endDate)
@@ -194,9 +215,9 @@ the full length of the benefit. */
                                         "cola-rate": this.rates[rateYear]["COLA"]
                                     };
                                     this.colaPeriods.push(benPeriod);
-                                    localWeeks = weeks + localWeeks;
                                     this.startDate = "07" + "/" + "01" + "/" + incYear;
                                     localRateYear = Number(localRateYear) + 1;
+                                    incYear = incYear + 1;
                                     
 
                                     } else {
@@ -217,18 +238,20 @@ the full length of the benefit. */
                                             "cola-rate": this.rates[rateYear]["COLA"]
                                         };
                                         this.colaPeriods.push(benPeriod);
-                                        localWeeks = localWeeks + weeks;
                                         this.startDate = "07" + "/" + "01" + "/" + incYear;
                                         localRateYear = Number(localRateYear) + 1;
-                                        
+                                        incYear = incYear + 1;
                                     }
                                 }
                             }
 
-
                             rateYear = String(Number(rateYear) + 1);
+                            /*
                             this.startDate = String(Number(permStartDate.getMonth() + 1)) + "/" + String(permStartDate.getDate()) + "/" + incYear;
+                            */
                             incYear = String(Number(incYear) + 1);
+                            
+
                             }
 
                         /* B:2 If rate is below max, run the benefit with same begin and end for each rate year until the start date year */
