@@ -158,6 +158,7 @@ the full length of the benefit. */
                                 cola = compRate - prevRate;
                             }
                             colaDue = weeksDue * cola;
+
                             
                             benPeriod = {
                                 "year": rateYear,
@@ -165,10 +166,10 @@ the full length of the benefit. */
                                 "begin": begDate,
                                 "end": endDate,
                                 "weeks-due": weeksDue,
-                                "cola": cola,
-                                "comp-rate": compRate,
-                                "cola-due": colaDue,
-                                "previous-rate": prevRate,
+                                "cola": Math.round(cola*100)/100,
+                                "comp-rate": Math.round(compRate*100)/100,
+                                "cola-due": Math.round(colaDue*100)/100,
+                                "previous-rate": Math.round(prevRate*100)/100,
                                 "max": this.rates[effectiveRateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
@@ -207,10 +208,10 @@ the full length of the benefit. */
                                         "begin": begDate,
                                         "end": endDate,
                                         "weeks-due": weeks,
-                                        "cola": cola,
-                                        "comp-rate": compRate,
-                                        "cola-due": colaDue,
-                                        "previous-rate": prevRate,
+                                        "cola": Math.round(cola*100)/100,
+                                        "comp-rate": Math.round(compRate*100)/100,
+                                        "cola-due": Math.round(colaDue*100)/100,
+                                        "previous-rate": Math.round(prevRate*100)/100,
                                         "max": this.rates[effectiveRateYear]["MAX"],
                                         "cola-rate": this.rates[rateYear]["COLA"]
                                     };
@@ -230,10 +231,10 @@ the full length of the benefit. */
                                             "begin": begDate,
                                             "end": endDate,
                                             "weeks-due": weeks,
-                                            "cola": cola,
-                                            "comp-rate": compRate,
-                                            "cola-due": colaDue,
-                                            "previous-rate": prevRate,
+                                            "cola": Math.round(cola*100)/100,
+                                            "comp-rate": Math.round(compRate*100)/100,
+                                            "cola-due": Math.round(colaDue*100)/100,
+                                            "previous-rate": Math.round(prevRate*100)/100,
                                             "max": this.rates[effectiveRateYear]["MAX"],
                                             "cola-rate": this.rates[rateYear]["COLA"]
                                         };
@@ -270,10 +271,10 @@ the full length of the benefit. */
                                 "begin": begDate,
                                 "end": endDate,
                                 "weeks-due": weeksDue,
-                                "cola": cola,
-                                "comp-rate": compRate,
-                                "cola-due": colaDue,
-                                "previous-rate": prevRate,
+                                "cola": Math.round(cola*100)/100,
+                                "comp-rate": Math.round(compRate*100)/100,
+                                "cola-due": Math.round(colaDue*100)/100,
+                                "previous-rate": Math.round(prevRate*100)/100,
                                 "max": this.rates[startRateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
@@ -313,10 +314,10 @@ the full length of the benefit. */
                                 "begin": begDate,
                                 "end": endDate,
                                 "weeks-due": weeksDue,
-                                "cola": cola,
-                                "comp-rate": compRate,
-                                "cola-due": colaDue,
-                                "previous-rate": prevRate,
+                                "cola": Math.round(cola*100)/100,
+                                "comp-rate": Math.round(compRate*100)/100,
+                                "cola-due": Math.round(colaDue*100)/100,
+                                "previous-rate": Math.round(prevRate*100)/100,
                                 "max": this.rates[rateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
@@ -349,10 +350,10 @@ the full length of the benefit. */
                                 "begin": begDate,
                                 "end": endDate,
                                 "weeks-due": weeksDue,
-                                "cola": cola,
-                                "comp-rate": compRate,
-                                "cola-due": colaDue,
-                                "previous-rate": prevRate,
+                                "cola": Math.round(cola*100)/100,
+                                "comp-rate": Math.round(compRate*100)/100,
+                                "cola-due": Math.round(colaDue*100)/100,
+                                "previous-rate": Math.round(prevRate*100)/100,
                                 "max": this.rates[rateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };

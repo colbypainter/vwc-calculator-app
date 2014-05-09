@@ -12,152 +12,145 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script type="text/javascript">
 
-		$(document).ready(function() {
+			$(document).ready(function() {
 			$("#cola_calculator").on('submit', function() {
-				var ben = new benefit();
-				ben.DOI = $(this).find("#_DOI").first().val();
-				ben.startDate = $(this).find("#start_date").first().val();
-				ben.endDate = $(this).find("#end_date").first().val();
-				ben.compRate = $(this).find("#comp_rate").first().val();
-				ben.getCola();
+			var ben = new benefit();
+			ben.DOI = $(this).find("#_DOI").first().val();
+			ben.startDate = $(this).find("#start_date").first().val();
+			ben.endDate = $(this).find("#end_date").first().val();
+			ben.compRate = $(this).find("#comp_rate").first().val();
+			ben.getCola();
+             
+                // Find jQuery elements here
+                var $benRowContainer = $("#row-wrap");
+                var $benRowTemplate = $("#benefit-row-template");
+                var $benRow;
+               
+                // Clear any previous result rows:
+                $benRowContainer.empty();
+                    
+	                for(var i=1; i < ben.colaPeriods.length; i++){
+	                    // DEBUG console.log("colaPeriod %o: %o",i,ben.colaPeriods[i]);
 
-				console.log(ben.colaPeriods);
+	                    // Copy the template element
+	                    $benRow = $benRowTemplate.clone();
 
-				$(this).find("#cola_due").first().val(ben.colaDue);
+	                    // Set values inside $benRow
+	                    $benRow.find(".cola_rate").val( ben.colaPeriods[i]['cola-rate'] );
+	                    $benRow.find(".from_date").val( ben.colaPeriods[i]['begin'] );
+	                    $benRow.find(".cola_column").val( ben.colaPeriods[i]['cola'] );
+	                    $benRow.find(".cola_due").val( ben.colaPeriods[i]['cola-due'] );
+	                    $benRow.find(".cc_rate").val( ben.colaPeriods[i]['comp-rate'] );
+	                    $benRow.find(".to_date").val( ben.colaPeriods[i]['end'] );
+	                    $benRow.find(".max_rate").val( ben.colaPeriods[i]['max'] );
+	                    $benRow.find(".prev_rate").val( ben.colaPeriods[i]['previous-rate'] );
+	                    $benRow.find(".weeks_column").val( ben.colaPeriods[i]['weeks-due'] );
+	                    $benRow.find(".rate_year").val( ben.colaPeriods[i]['year'] );
+	                    // TODO: other values
+
+	                    // Add new row to DOM and display it
+	                    $benRowContainer.append( $benRow.show() );
+	                }
 				return false;
+				});
 			});
-		});
-
 		</script>
-	</head>
+</head>
+<body>
+        <div id="Nav">
+            <ul>
+                <li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+                <li><a href="index.html">Main</a></li>
+                <li><a href="BasicCalc.html">Basic Calculator</a></li>
+                <li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+                <li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+                <li><a href="interest.html">Interest Calculator</a></li>
+                <li>COLA Calculator</li>
+            </ul>
+        </div>
 
-		<body>
+        <div id="Container">
+            <div id="Calculator" style="width: 900px; height: 1200px;">
+                <h1>Calculate COLA Amounts</h1>
+                <div id="legend">
+                    <p style="align-left">ALERT: This Page Remains Under Construction</p>
+                </div>
+                <form id="cola_calculator">
+                    <div id="cola-inputs">
+                        <span><strong>Enter Benefit Information</strong></span><br>
+                            <input type="text" value="" id="_DOI" size="12">
+                            <label for="_DOI">Accident Date</label>
+                        <br>
+                            <input type="text" value="" id="start_date" size="12">
+                            <label for="start_date">Begin Date</label>
+                        <br>
+                            <input type="text" value="" id="end_date" size="12">
+                            <label for="end_date">End Date</label>
+                        <br>
+                            <input type="text" value="" id="comp_rate" size="12">
+                            <label for="comp_rate">Compensation Rate</label>
+                        <br>
+                            <input type="text" value="" id="cola_paid" size="12">
+                            <label for="cola_paid">COLA Paid</label>
+                        <br>
+                            <input type="submit" value="Calculate" id="calculate">
+                    </div>
+                </form>
 
-			<div id="Nav">
-				<ul>
-					<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
-					<li><a href="index.html">Main</a></li>
-					<li><a href="BasicCalc.html">Basic Calculator</a></li>
-					<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
-					<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
-					<li><a href="interest.html">Interest Calculator</a></li>
-					<li>COLA Calculator</li>
-				</ul>
-			</div>
+                <div id="total-row">
+                    <span><strong>Results</strong></span><br>
+                    <label>Compounded Comp Rate
+                    <input type="text" value="" id="compounded-comp-rate" readonly>
+                    </label><br>
 
-			<div id="Container">
-					<div id="Calculator" style="width: 850px; height: 600px">
-					<h1>Calculate COLA Amounts</h1>
-					<div id="legend">
-						<p style="align-left">ALERT: This Page Remains Under Construction</p>
-					</div>
-					<form id="cola_calculator">
+                    <label>Maximum In Effect
+                    <input type="text" value="" id="max-in-effect" readonly>
+                    </label><br>
 
-						<div id="cola-inputs">
-							<span><strong>Enter Benefit Information</strong></span><br>
-								<input type="text" value="" id="_DOI" size="12">
-								<label for="_DOI">Accident Date</label>
-							<br>
-								<input type="text" value="" id="start_date" size="12">
-								<label for="start_date">Begin Date</label>
-							<br>
-								<input type="text" value="" id="end_date" size="12">
-								<label for="end_date">End Date</label>
-							<br>
-								<input type="text" value="" id="comp_rate" size="12">
-								<label for="comp_rate">Compensation Rate</label>
-							<br>
-								<input type="text" value="" id="cola_paid" size="12">
-								<label for="cola_paid">COLA Paid</label>
-							<br>
-								<input type="submit" value="Calculate" id="calculate">
-						</div>
+                    <label>Total Due
+                    <input type="text" value="" id="total-due" readonly>
+                    </label><br>
 
-						<div id="total-row">
-							<span><strong>Results</strong></span><br>
-							<label>Compounded Comp Rate
-							<input type="text" value="" id="compounded-comp-rate" readonly>
-							</label><br>
+                    <label>Difference
+                    <input type="text" value="" id="total-diff" readonly>
+                    </label><br>
 
-							<label>Maximum In Effect
-							<input type="text" value="" id="max-in-effect" readonly>
-							</label><br>
+                    <input type="reset" value="Reset" id="reset">
+                </div>
 
-							<label>Total Due
-							<input type="text" value="" id="total-due" readonly>
-							</label><br>
+                <br><br>
+               
+                <table id="cola-table">
+                    <thead>
+                        <tr><th>Rate Year</th>
+                            <th>COLA %</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Previous Rate</th>
+                            <th>CC Rate</th>
+                            <th>Max Rate</th>
+                            <th>COLA</th>
+                            <th>Weeks</th>
+                            <th>COLA Due</th></tr>
+                    </thead>
 
-							<label>Difference
-							<input type="text" value="" id="total-diff" readonly>
-							</label><br>
+                    <tbody id="row-wrap">
+                        <tr id="benefit-row-template" class="benefit_row">
+                            <td><input type="text" name="rate year" value="" class="rate_year" id="rate-year" size="10" readonly /></td>
+                            <td><input type="text" name="cola-rate" value="" class="cola_rate" size="10" readonly /></td>
+                            <td><input type="text" name="from-date" value="" class="from_date" size="10" readonly /></td>
+                            <td><input type="text" name="to-date" value = "" class="to_date" size="10" readonly /></td>
+                            <td><input type="text" name="Previous Rate" value = "" class="prev_rate" size="10" readonly></td>
+                            <td><input type="text" name="CC Rate" value = "" class="cc_rate" size="10" readonly /></td>
+                            <td><input type="text" name="Max Rate" value = "" class="max_rate" size="10" readonly /></td>
+                            <td><input type="text" name="cola column" value = "" class="cola_column" size="10" readonly /></td>
+                            <td><input type="text" value="" class="weeks_column" size="10" readonly /></td>
+                            <td><input type="text" value="" class="cola_due" size="12" maxlength="12" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-							<input type="reset" value="Reset" id="reset">
-						</div>
-
-						<br><br>
-
-						<div id="row-wrap" style="margin-left: 10px">
-							<div class="benefit_row">
-
-								<div class="line_benefit">
-								<label for="rate-year" id="lossLabel">Rate Year</label>
-								<input type="text" name="rate year" value = "" class="rate_year" id="rate-year" size="10" readonly>
-							</div>
-
-								<div class="line_benefit">
-								<label for="cola-rate">COLA Rate</label>
-									<input type="text" name="cola rate" value = "" class="cola_rate" id="cola-rate" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-								<label for="from-date">From</label>
-									<input type="text" name="from date" value = "" class="from_date" id="from-date" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-								<label for="to-date">To</label>
-									<input type="text" name="to date" value = "" class="to_date" id="to-date" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="prev-rate">Previous Rate</label>
-									<input type="text" name="Previous Rate" value = "" class="prev_rate" id="prev-rate" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="cc-rate">CC Rate</label>
-									<input type="text" name="CC Rate" value = "" class="cc_rate" id="cc-rate" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="max-rate">Max Rate</label>
-									<input type="text" name="Max Rate" value = "" class="max_rate" id="max-rate" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="cola-column">COLA</label>
-									<input type="text" name="cola column" value = "" class="cola_column" id="cola-column" size="10" readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="weeks_column">Weeks</label>
-									<input type="text" value = "" class="weeks_column" id="weeks_column" size="10"  readonly>
-								</div>
-
-								<div class="line_benefit">
-									<label for="cola_due">COLA Due</label>
-									<input type="text" value = "" class="cola_due" id="cola_due" size="12" maxlength="12">
-								</div>
-
-								</div>
-
-								<div id="results">
-
-								</div>
-							</div>
-						</form>
-			</div>
-			
-		</div>
-		</body>
+</body>
 </html>

@@ -158,10 +158,18 @@ legend {
 }
 
 #cola-inputs {
+	width: 50%;
 	font-size: 80%;
 	text-align: left;
 	margin-left: 15px;
 }
 
+#benefit-row-template {
+    display: none;
+}
 
+#cola-table {
+	font-size: 75%;
+	width: 100%;
+}
 
