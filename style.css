@@ -118,7 +118,6 @@ table, th, td {
 	border: 1px solid blue;
 	border-radius: 35px; 
 	width: 700px;
-	height: 480px;
 }
 
 legend {
@@ -161,6 +160,9 @@ legend {
 	font-size: 80%;
 	text-align: left;
 	margin-left: 15px;
+}
+#benefit-row-template {
+    display: none;
 }
 
 
