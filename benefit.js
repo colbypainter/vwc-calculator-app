@@ -530,8 +530,6 @@ the full length of the benefit. */
     this.setCompRate = setCompRate;
     function setCompRate() {
         var rateYear = setRateYear(this.DOI);
-        console.log(this.AWW);
-        console.log(this.rates[rateYear]["MIN"]);
         if (Number(this.AWW - this.PWW) < Number(this.rates[rateYear]["MIN"]) && this.benType == "TP") {
             this.compRate = (this.AWW - this.PWW)*(2/3);
             this.compRate = Math.round(this.compRate * 100)/100;
