@@ -14,45 +14,72 @@
 
 			$(document).ready(function() {
 			$("#cola_calculator").on('submit', function() {
-			var ben = new benefit();
-			ben.DOI = $(this).find("#_DOI").first().val();
-			ben.startDate = $(this).find("#start_date").first().val();
-			ben.endDate = $(this).find("#end_date").first().val();
-			ben.compRate = $(this).find("#comp_rate").first().val();
-			ben.getCola();
+
+                var ben = new benefit();
+                ben.DOI = $(this).find("#_DOI").first().val();
+                ben.startDate = $(this).find("#start_date").first().val();
+                ben.endDate = $(this).find("#end_date").first().val();
+                ben.compRate = $(this).find("#comp_rate").first().val();
+                ben.getCola();
              
                 // Find jQuery elements here
                 var $benRowContainer = $("#row-wrap");
                 var $benRowTemplate = $("#benefit-row-template");
                 var $benRow;
+                var rowHighlight = false;
+                var currentYear;
+
                
                 // Clear any previous result rows:
                 $benRowContainer.empty();
+                     
+                for(var i=1; i < ben.colaPeriods.length; i++){
+                    // DEBUG console.log("colaPeriod %o: %o",i,ben.colaPeriods[i]);
                     
-	                for(var i=1; i < ben.colaPeriods.length; i++){
-	                    // DEBUG console.log("colaPeriod %o: %o",i,ben.colaPeriods[i]);
+                    // Copy the template element
+                    $benRow = $benRowTemplate.clone();
+                    colaPeriod = ben.colaPeriods[i];
 
-	                    // Copy the template element
-	                    $benRow = $benRowTemplate.clone();
+                    // Set values inside $benRow
+                    $benRow.find(".cola_rate").html( colaPeriod['cola-rate'] );
+                    $benRow.find(".from_date").html( colaPeriod['begin'] );
+                    $benRow.find(".cola_column").html( colaPeriod['cola'] );
+                    $benRow.find(".cola_due").html( colaPeriod['cola-due'] );
+                    $benRow.find(".cc_rate").html( colaPeriod['comp-rate'] );
+                    $benRow.find(".to_date").html( colaPeriod['end'] );
+                    $benRow.find(".max_rate").html( colaPeriod['max'] );
+                    $benRow.find(".prev_rate").html( colaPeriod['previous-rate'] );
+                    $benRow.find(".weeks_column").html( colaPeriod['weeks-due'] );
+                    $benRow.find(".rate_year").html( colaPeriod['year'] );
+                    
+                    // Check for row highlighting:
+                    if(currentYear != colaPeriod['year']){
+                        currentYear = colaPeriod['year'];
+                        rowHighlight = rowHighlight ? false : true;
+                    }
+                    
+                    if(rowHighlight){
+                        $benRow.addClass('stripe-row');
+                    } else {
+                        $benRow.removeClass('stripe-row');
+                    }
 
-	                    // Set values inside $benRow
-	                    $benRow.find(".cola_rate").val( ben.colaPeriods[i]['cola-rate'] );
-	                    $benRow.find(".from_date").val( ben.colaPeriods[i]['begin'] );
-	                    $benRow.find(".cola_column").val( ben.colaPeriods[i]['cola'] );
-	                    $benRow.find(".cola_due").val( ben.colaPeriods[i]['cola-due'] );
-	                    $benRow.find(".cc_rate").val( ben.colaPeriods[i]['comp-rate'] );
-	                    $benRow.find(".to_date").val( ben.colaPeriods[i]['end'] );
-	                    $benRow.find(".max_rate").val( ben.colaPeriods[i]['max'] );
-	                    $benRow.find(".prev_rate").val( ben.colaPeriods[i]['previous-rate'] );
-	                    $benRow.find(".weeks_column").val( ben.colaPeriods[i]['weeks-due'] );
-	                    $benRow.find(".rate_year").val( ben.colaPeriods[i]['year'] );
+                    // Check for max alerts
+                    if( colaPeriod['previous-rate'] > colaPeriod['max'] ){
+                        $benRow.find(".prev_rate").parent().addClass("alert");
+                        $benRow.find(".max_rate").parent().addClass("alert");
+                    }
+                    if( colaPeriod['comp-rate'] > colaPeriod['max'] ){
+                        $benRow.find(".cc_rate").parent().addClass("alert");
+                        $benRow.find(".max_rate").parent().addClass("alert");
+                    }
 
-	                    // Add new row to DOM and display it
-	                    $benRowContainer.append( $benRow.show() );
-	                }
-				return false;
-				});
+                    // Add new row to DOM and display it
+                    $benRowContainer.append( $benRow.show() );
+                }
+                return false;
 			});
+		});
 		</script>
 </head>
 <body>
@@ -135,16 +162,16 @@
 
                     <tbody id="row-wrap">
                         <tr id="benefit-row-template" class="benefit_row">
-                            <td><input type="text" name="rate year" value="" class="rate_year" id="rate-year" size="10" readonly /></td>
-                            <td><input type="text" name="cola-rate" value="" class="cola_rate" size="10" readonly /></td>
-                            <td><input type="text" name="from-date" value="" class="from_date" size="10" readonly /></td>
-                            <td><input type="text" name="to-date" value = "" class="to_date" size="10" readonly /></td>
-                            <td><input type="text" name="Previous Rate" value = "" class="prev_rate" size="10" readonly></td>
-                            <td><input type="text" name="CC Rate" value = "" class="cc_rate" size="10" readonly /></td>
-                            <td><input type="text" name="Max Rate" value = "" class="max_rate" size="10" readonly /></td>
-                            <td><input type="text" name="cola column" value = "" class="cola_column" size="10" readonly /></td>
-                            <td><input type="text" value="" class="weeks_column" size="10" readonly /></td>
-                            <td><input type="text" value="" class="cola_due" size="12" maxlength="12" /></td>
+                            <td><span class="rate_year"></span></td>
+                            <td><span class="cola_rate"></span></td>
+                            <td><span class="from_date"></span></td>
+                            <td><span class="to_date"></span></td>
+                            <td><span class="prev_rate"></span></td>
+                            <td><span class="cc_rate"></span></td>
+                            <td><span class="max_rate"></span></td>
+                            <td><span class="cola_column"></span></td>
+                            <td><span class="weeks_column"></span></td>
+                            <td><span class="cola_due"></span></td>
                         </tr>
                     </tbody>
                 </table>

@@ -171,5 +171,9 @@ legend {
 #cola-table {
 	font-size: 75%;
 	width: 100%;
+    color: #000;
 }
+
+.stripe-row { background-color: #DEEDFC; }
+.alert { background-color: #F5AEBE; }
 
