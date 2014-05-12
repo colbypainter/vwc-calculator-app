@@ -45,7 +45,7 @@ fieldset {
 	width: 245px;
 	height: auto;
 	margin: 0px 20px 0px 0px;
-	background-color: #F1F8FF;
+	//background-color: #F1F8FF;
     float: left; 
 }
 
@@ -111,6 +111,7 @@ table, th, td {
 
 #Calculator {
 	//background-color: #F1F8FF;
+	position: absolute;
 	color:#2570a8;
 	border: 0px solid blue;
 	border-radius: 35px; 
