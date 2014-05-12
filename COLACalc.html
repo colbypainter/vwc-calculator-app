@@ -51,6 +51,13 @@
                     $benRow.find(".prev_rate").html( colaPeriod['previous-rate'] );
                     $benRow.find(".weeks_column").html( colaPeriod['weeks-due'] );
                     $benRow.find(".rate_year").html( colaPeriod['year'] );
+
+                    // Set Total values
+                    var colaPaid = $(this).find("#cola_paid").first().val(); 
+                    $("#total-row").find("#compounded-comp-rate").val(ben.compoundedCompRate);
+                    $("#total-row").find("#max-in-effect").val(ben.maxInEffect);
+                    $("#total-row").find("#total-due").val(ben.colaDue);
+                    $("#total-row").find("#total-diff").val(ben.colaDue - Number(colaPaid));
                     
                     // Check for row highlighting:
                     if(currentYear != colaPeriod['year']){

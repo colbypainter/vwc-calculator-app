@@ -12,7 +12,9 @@ function benefit() {
     this.weeksDue = "";
     this.compRate = "";
     this.rateYear = "";
-    this.colaDue = "";
+    this.colaDue = 0;
+    this.maxInEffect = "";
+    this.compoundedCompRate = "";
     this.colaPeriods = [];
 
     this.rates = {
@@ -124,13 +126,10 @@ function benefit() {
         var colaRate = 0;
         /* don't know the purpose here, kill it */
         this.rateYear = tempRateYear;
-        /* Handles edge case where first year exceeds the max cola. Adds an empty benefit so the resulting array still 
+        /* REVISIT ASAP: Handles edge case where first year exceeds the max cola. Adds an empty benefit so the resulting array still 
            begins at [1]. First year max scenarios are a work in progress. 
            */
-        console.log(this.compRate);
-        console.log(this.rates[startRateYear]["MAX"]);
-        console.log(rateYear);
-        console.log(startYear);
+
         if ((Number(this.compRate) > Number(this.rates[startRateYear]["MAX"])) && (Number(rateYear) > 1974 && Number(rateYear) <= startYear)) {
             benPeriod = {};
             this.colaPeriods.push(benPeriod);
@@ -201,6 +200,9 @@ the full length of the benefit. */
                         "max": this.rates[effectiveRateYear]["MAX"],
                         "cola-rate": this.rates[rateYear]["COLA"]
                 };
+                this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                this.compoundedCompRate = Math.round(compRate * 100) / 100;
+                this.colaDue = this.colaDue + Number(colaDue);
                 console.log(benPeriod);
                 this.colaPeriods.push(benPeriod);
                 /* This block will run the remaining weeks out for the rate year */
@@ -249,7 +251,10 @@ the full length of the benefit. */
                                 "max": this.rates[effectiveRateYear]["MAX"],
                                 "cola-rate": this.rates[rateYear]["COLA"]
                             };
+                            this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                            this.compoundedCompRate = Math.round(compRate * 100) / 100;
                             this.colaPeriods.push(benPeriod);
+                            this.colaDue = this.colaDue + Number(colaDue);
                             console.log(benPeriod);
                             this.startDate = "07" + "/" + "01" + "/" + incYear;
                             localRateYear = Number(localRateYear) + 1;
@@ -281,7 +286,10 @@ the full length of the benefit. */
                                         "max": this.rates[effectiveRateYear]["MAX"],
                                         "cola-rate": this.rates[rateYear]["COLA"]
                                 };
+                                this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                                this.compoundedCompRate = Math.round(compRate * 100) / 100;
                                 this.colaPeriods.push(benPeriod);
+                                this.colaDue = this.colaDue + Number(colaDue);
                                 console.log(benPeriod);
                                 this.startDate = "07" + "/" + "01" + "/" + incYear;
                                 localRateYear = Number(localRateYear) + 1;
@@ -329,10 +337,12 @@ the full length of the benefit. */
                         "max": this.rates[effectiveRateYear]["MAX"],
                         "cola-rate": this.rates[rateYear]["COLA"]
                 };
+                this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                this.compoundedCompRate = Math.round(compRate * 100) / 100;
                 this.colaPeriods.push(benPeriod);
+                this.colaDue = this.colaDue + Number(colaDue);
                 console.log(benPeriod);
                 rateYear = String(Number(rateYear) + 1);
-                this.colaDue = this.colaDue + colaDue;
                 colaRate = Number(this.rates[rateYear]["COLA"]) / 100;
                 prevRate = this.compRate;
                 this.compRate = (1 + colaRate) * this.compRate;
@@ -396,6 +406,9 @@ the full length of the benefit. */
                    But will probably cause issues with the comp rate if this non-created benefit isn't the last one. */
                 if (weeksDue > 0) {
                     this.colaPeriods.push(benPeriod);
+                    this.colaDue = this.colaDue + Number(colaDue);
+                    this.maxInEffect = this.rates[rateYear]["MAX"];
+                    this.compoundedCompRate = Math.round(compRate * 100) / 100;
                 }
                 /* This block will run the remaining weeks out for the rate year */
                 if (endDateDate.getFullYear() > Number(rateYear)) {
@@ -440,8 +453,11 @@ the full length of the benefit. */
                                     "max": this.rates[effectiveRateYear]["MAX"],
                                     "cola-rate": this.rates[rateYear]["COLA"]
                             };
+                            this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                            this.compoundedCompRate = Math.round(compRate * 100) / 100;
                             this.colaPeriods.push(benPeriod);
                             console.log(benPeriod);
+                            this.colaDue = this.colaDue + Number(colaDue);
                             this.startDate = "07" + "/" + "01" + "/" + incYear;
                             localRateYear = Number(localRateYear) + 1;
                             
@@ -472,7 +488,10 @@ the full length of the benefit. */
                                         "max": this.rates[effectiveRateYear]["MAX"],
                                         "cola-rate": this.rates[rateYear]["COLA"]
                                 };
+                                this.maxInEffect = this.rates[effectiveRateYear]["MAX"];
+                                this.compoundedCompRate = Math.round(compRate * 100) / 100;
                                 this.colaPeriods.push(benPeriod);
+                                this.colaDue = this.colaDue + Number(colaDue);
                                 console.log(benPeriod);
                                 this.startDate = "07" + "/" + "01" + "/" + incYear;
                                 localRateYear = Number(localRateYear) + 1;
@@ -526,10 +545,12 @@ the full length of the benefit. */
                 };
                 if (weeksDue > 0) {
                     this.colaPeriods.push(benPeriod);
+                    this.colaDue = this.colaDue + Number(colaDue);
+                    this.maxInEffect = this.rates[rateYear]["MAX"];
+                    this.compoundedCompRate = Math.round(compRate * 100) / 100;
                 }
                 console.log(benPeriod);
                 rateYear = String(Number(rateYear) + 1);
-                this.colaDue = this.colaDue + colaDue;
                 colaRate = Number(this.rates[rateYear]["COLA"]) / 100;
                 prevRate = this.compRate;
                 this.compRate = (1 + colaRate) * this.compRate;
@@ -540,6 +561,8 @@ the full length of the benefit. */
                 this.startDate = String(begMonth + "/" + begDay + "/" + begYear);
             }
         }
+
+        this.colaDue = Math.round(this.colaDue * 100)/100;
         return this.colaDue;
     }
         
