@@ -38,7 +38,7 @@
 				if (opDate.getTime() > endDate.getTime()) {
 					dueAtOpinion = Math.round(ben.weeksDue * ben.compRate * 100)/100;
 				} else {
-					var opinionWeeks = getWeeks(String(ben.startDate), opDate);
+					var opinionWeeks = getWeeks(opDate, String(ben.startDate));
 					dueAtOpinion = Math.round(opinionWeeks * ben.compRate * 100)/100;
 				}
 				$(this).find("#due-at-opinion").first().val(dueAtOpinion);
@@ -64,17 +64,19 @@
 				/* Scenario 1: Date of Opinion is after End Date */
 				if (opDate.getTime() > endDate.getTime()) {
 					interest = Math.round(dueAtOpinion * daysDelayed * interestRate * 100)/100;
+					console.log("test1");
 				/* Scenario 2: Paid Date is after End Date */
 				} else if (paidDate.getTime() > endDate.getTime()) {
-					var localWeeks = getWeeks(endDate, opDate);
+					var localWeeks = getWeeks(opDate, endDate);
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (localWeeks * (localWeeks + 1)/2));
-					localWeeks2 = getWeeks(paidDate, endDate);
+					localWeeks2 = getWeeks(endDate, paidDate);
 					var additionalComp = (localWeeks/7) * ben.compRate;
 					interest = interest + (localWeeks2 * additionalComp * interestRate);
+					console.log("test2");
 				/* Scenario 3: All remaining scenarios */
 				} else {
 					interest = (dueAtOpinion * daysDelayed * interestRate) + (dailyRate * interestRate * (daysDelayed * (daysDelayed + 1)/2));
-					
+					console.log("test3");
 				}
 				interest = Math.round(interest*100)/100;
 				$(this).find("#interest-due").first().val(interest);
