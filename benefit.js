@@ -183,7 +183,7 @@ so, end the benefit at 06/30 of the current year */
                 } else {
                     cola = compRate - prevRate;
                 }
-                colaDue = weeks * cola;
+                colaDue = weeks * (Math.round(cola*100)/100);
 
                 benPeriod = {
                         "year": rateYear,
@@ -235,7 +235,7 @@ so, end the benefit at 06/30 of the current year */
                             } else {
                                 cola = compRate - prevRate;
                             }
-                            colaDue = weeks * cola;
+                            colaDue = weeks * (Math.round(cola*100)/100);
 
                             benPeriod = {
                                 "year": rateYear,
@@ -277,7 +277,7 @@ so, end the benefit at 06/30 of the current year */
                                 } else {
                                     cola = compRate - prevRate;
                                 }
-                                colaDue = weeks * cola;
+                                colaDue = weeks * (Math.round(cola*100)/100);
                                 localRateYear = endYear;
                                 benPeriod = {
                                     "year": rateYear,
@@ -333,7 +333,7 @@ so, end the benefit at 06/30 of the current year */
                 compRate = Number(this.compRate);
                 weeksDue = this.weeksDue;
                 cola = compRate - prevRate;
-                colaDue = cola * (weeksDue);
+                colaDue = (Math.round(cola*100)/100) * (weeksDue);
                 benPeriod = {
                     "year": rateYear,
                         "test": "b",
@@ -397,7 +397,7 @@ so, end the benefit at 06/30 of the current year */
                 } else {
                     cola = compRate - prevRate;
                 }
-                colaDue = this.weeksDue * cola;
+                colaDue = this.weeksDue * (Math.round(cola*100)/100);
                 weeksDue = this.weeksDue;
                 benPeriod = {
                     "year": rateYear,
@@ -453,7 +453,7 @@ But will probably cause issues with the comp rate if this non-created benefit is
                             } else {
                                 cola = compRate - prevRate;
                             }
-                            colaDue = weeks * cola;
+                            colaDue = weeks * (Math.round(cola*100)/100);
 
                             benPeriod = {
                                 "year": rateYear,
@@ -495,7 +495,7 @@ But will probably cause issues with the comp rate if this non-created benefit is
                                 } else {
                                     cola = compRate - prevRate;
                                 }
-                                colaDue = weeks * cola;
+                                colaDue = weeks * (Math.round(cola*100)/100);
                                 benPeriod = {
                                     "year": rateYear,
                                         "test": "c-2",
@@ -554,7 +554,7 @@ But will probably cause issues with the comp rate if this non-created benefit is
                 compRate = Number(this.compRate);
                 weeksDue = this.weeksDue;
                 cola = compRate - prevRate;
-                colaDue = cola * (weeksDue);
+                colaDue = (Math.round(cola*100)/100) * (weeksDue);
                 benPeriod = {
                     "year": rateYear,
                         "test": "d",
