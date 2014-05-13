@@ -10,6 +10,7 @@
 		<script src="jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
+        <script type = "text/javascript" src="jquery.maskedinput.js"></script>
 		<script type="text/javascript">
 
 			$(document).ready(function() {
@@ -86,6 +87,28 @@
                 }
                 return false;
 			});
+            /*
+            $("#cola-inputs").on("change", "#comp_rate", function() {
+                    var ben = new benefit();
+                    ben.DOI = $(this).closest("#cola-inputs").find("#_DOI").first().val();
+                    ben.compRate = $(this).closest("#cola-inputs").find("#comp_rate").first().val();
+                    ben.setRateYear(ben.DOI);
+                    if (ben.compRate >= ben.rates[ben.rateYear]["MAX"]) {
+                        $(this).closest("#cola-inputs").find("#comp_rate").first().val(ben.rates[ben.rateYear]["MAX"]);
+                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#F5AEBE");
+                    } else if (ben.compRate <= ben.rates[ben.rateYear]["MIN"]) {
+                        $(this).closest("#cola-inputs").find("#comp_rate").first().val(ben.rates[ben.rateYear]["MIN"]);
+                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#F5AEBE");
+                    } else {
+                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#DEEDFC");
+                    }
+                    return false;
+                });
+            */
+            /* Input mask for date inputs */
+            jQuery(function($) {
+               $(".date").mask("99/99/9999");
+            });
 		});
 		</script>
 </head>
@@ -108,13 +131,13 @@
                 <form id="cola_calculator">
                     <div id="cola-inputs">
                         <span><strong>Enter Benefit Information</strong></span><br>
-                            <input type="text" value="" id="_DOI" size="12">
+                            <input type="text" value="" id="_DOI" class = "date" size="12">
                             <label for="_DOI">Accident Date</label>
                         <br>
-                            <input type="text" value="" id="start_date" size="12">
+                            <input type="text" value="" id="start_date" class = "date" size="12">
                             <label for="start_date">Begin Date</label>
                         <br>
-                            <input type="text" value="" id="end_date" size="12">
+                            <input type="text" value="" id="end_date" class = "date" size="12">
                             <label for="end_date">End Date</label>
                         <br>
                             <input type="text" value="" id="comp_rate" size="12">

@@ -10,6 +10,7 @@
 			<script src="jquery-1.10.2.js"></script>
 			<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 			<link rel="stylesheet" type="text/css" href="style.css">
+			<script type = "text/javascript" src="jquery.maskedinput.js"></script>
 			<script type="text/javascript">
 
 			/* Primary Calculation Method */
@@ -106,6 +107,12 @@
 					}
 
 				});
+
+			/* Input mask for date inputs */
+            jQuery(function($) {
+               $(".date").mask("99/99/9999");
+            });
+
 			});
 
 			/* Calculates difference between Comp Paid and Comp Due on fly. Triggered by change in either field */
@@ -184,13 +191,13 @@
 				<fieldset name="benefitSelect">
 					<legend>Choose a Benefit Type</legend>
 						<div align="left">
-							<select id="typeOfBenefit"  class="type_of_benefit" required>
+							<select id="typeOfBenefit"  class="type_of_benefit" >
 								<option value="">Select Benefit Type</option>
 								<option value="TT">TT - Temporary Total</option>
 								<option value="PP">PP - Permanent Partial</option>
 								<option value="TP">TP - Temporary Partial</option>
 							</select>
-							<select id="bodyPartType" class="body_part_type" required>
+							<select id="bodyPartType" class="body_part_type" >
 								<option value="">Select Body Part</option>
 								<option value="60">Thumb</option>
 								<option value="35">First Finger</option>
@@ -218,24 +225,24 @@
 								<option value="60">Whole Body</option>
 							</select>
 							<label for="percentLoss" id="lossLabel">% Loss</label>
-							<input type="text" name="percentLoss" value="" id="percentLoss" class="percent_loss" maxlength="5" size="5" required>
+							<input type="text" name="percentLoss" value="" id="percentLoss" class="percent_loss" maxlength="5" size="5" >
 					</div>
 				</fieldset>
 				<fieldset name="benefitData">
 					<legend>Enter Benefit Information</legend>
 						<div align="left">
 							<label for="DOI">Accident Date</label>
-								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI datepicker" size="10" required><br>
+								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI datepicker date" size="10" ><br>
 							<label for="AWW">Average Weekly Wage</label>
-								<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7" required ><br>
+								<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7"  ><br>
 							<label for="PWW">Partial Weekly Wage</label>
 								<input type="text" name="Partial Weekly Wage" value="" id="PWW" class="P_WW" size="7" maxlength="7" disabled="disabled"><br>
 							<label for="compRate">Compensation Rate</label>
-								<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" required> <br>
+								<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" > <br>
 							<label for="startDate">Start Date</label>
-								<input type="text" name="Start Date" value="" id="startDate" class="start_date datepicker" size="10" required><br>
+								<input type="text" name="Start Date" value="" id="startDate" class="start_date datepicker date" size="10" ><br>
 							<label for="endDate">End Date</label>
-								<input type="text" name="End Date" value=""  id="endDate" class="end_date datepicker" size="10" maxlength ="10"><br>
+								<input type="text" name="End Date" value=""  id="endDate" class="end_date datepicker date" size="10" maxlength ="10"><br>
 							<label for="weeksDue">Weeks Due</label>
 								<input type="text" name="Weeks Due" value="" id="weeksDue" class="weeks_due" size="10" maxlength="10"><br>
 						</div>

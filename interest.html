@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="jquery-ui-1.10.4.custom.css">
 		<script src="jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
+		<script type = "text/javascript" src="jquery.maskedinput.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script type="text/javascript">
 
@@ -109,6 +110,11 @@
 						changeYear: true
 				});
 
+				/* Input mask for date inputs */
+	            jQuery(function($) {
+	               $(".date").mask("99/99/9999");
+	            });
+
 		});
 		</script>
 
@@ -137,22 +143,22 @@
 					<div align="left">
 						
 						<label for="DOI">Accident Date</label>
-						<input type="text" name="DOI" class="datepicker" value="" id="DOI" maxlength="10" size="10" required><br>
+						<input type="text" name="DOI" class="datepicker date" value="" id="DOI" maxlength="10" size="10" ><br>
 
 						<label for="opinion-date">Date of Opinion</label>
-						<input type="text" name="opinion-date" class="datepicker" value="" id="opinion-date" maxlength="10" size="10" required><br>
+						<input type="text" name="opinion-date" class="datepicker date" value="" id="opinion-date" maxlength="10" size="10" ><br>
 
 						<label for="start-date">Benefit Start Date</label>
-						<input type="text" name="start-date" class="datepicker" value="" id="start-date" maxlength="10" size="10" required><br>
+						<input type="text" name="start-date" class="datepicker date" value="" id="start-date" maxlength="10" size="10" ><br>
 
 						<label for="endDate">Benefit End Date</label>
-						<input type="text" name="end-date" class="datepicker" value="" id="end-date" maxlength="10" size="10" required><br>
+						<input type="text" name="end-date" class="datepicker date" value="" id="end-date" maxlength="10" size="10" ><br>
 
 						<label for="compRate">Compensation Rate</label>
-						<input type="text" name="comp-rate" value="" id="comp-rate" maxlength="7" size="7" required><br>
+						<input type="text" name="comp-rate" value="" id="comp-rate" maxlength="7" size="7" ><br>
 
 						<label for="paid-date">Date Paid</label>
-						<input type="text" name="paid-date" class="datepicker" value="" id="paid-date" maxlength="10" size="10" required><br>
+						<input type="text" name="paid-date" class="datepicker date" value="" id="paid-date" maxlength="10" size="10" ><br>
 				<input type="submit" name="calculate" value="Calculate">
 					</div>
 			</fieldset>
