@@ -14,6 +14,12 @@
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+
+            /* Input mask for date inputs */
+            jQuery(function($) {
+               $(".date").mask("99/99/9999");
+            });
+
 			$("#cola_calculator").on('submit', function() {
 
                 var ben = new benefit();
@@ -86,28 +92,21 @@
                 }
                 return false;
 			});
-            /*
-            $("#cola-inputs").on("change", "#comp_rate", function() {
+            
+            $("#comp_rate").on("change", function() {
                     var ben = new benefit();
-                    ben.DOI = $(this).closest("#cola-inputs").find("#_DOI").first().val();
-                    ben.compRate = $(this).closest("#cola-inputs").find("#comp_rate").first().val();
+                    ben.DOI = $("#cola-inputs").find("#_DOI").first().val();
+                    ben.compRate = $("#cola-inputs").find("#comp_rate").first().val();
                     ben.setRateYear(ben.DOI);
-                    if (ben.compRate >= ben.rates[ben.rateYear]["MAX"]) {
-                        $(this).closest("#cola-inputs").find("#comp_rate").first().val(ben.rates[ben.rateYear]["MAX"]);
-                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#F5AEBE");
-                    } else if (ben.compRate <= ben.rates[ben.rateYear]["MIN"]) {
-                        $(this).closest("#cola-inputs").find("#comp_rate").first().val(ben.rates[ben.rateYear]["MIN"]);
-                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#F5AEBE");
+                    if (Number(ben.compRate) >= Number(ben.rates[ben.rateYear]["MAX"])) {
+                        $("#cola-inputs").find("#comp_rate").first().val(ben.rates[ben.rateYear]["MAX"]);
+                        $("#cola-inputs").find("#comp_rate").first().css("background-color", "#F5AEBE");
                     } else {
-                        $(this).closest("#cola-inputs").find("#comp_rate").first().css("background-color", "#DEEDFC");
+                        $("#cola-inputs").find("#comp_rate").first().css("background-color", "#DEEDFC");
                     }
                     return false;
                 });
-            */
-            /* Input mask for date inputs */
-            jQuery(function($) {
-               $(".date").mask("99/99/9999");
-            });
+            
 		});
 		</script>
 </head>
