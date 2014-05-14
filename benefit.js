@@ -57,7 +57,13 @@ function benefit() {
     "2011": {"COLA": "1.6", "MAX": "905", "MIN": "226.25"},
     "2012": {"COLA": "3.1", "MAX": "935", "MIN": "233.75"},
     "2013": {"COLA": "1.7", "MAX": "955", "MIN": "238.75"},
-    "2014": {"COLA": "1.5", "MAX": "967", "MIN": "241.75"}
+    "2014": {"COLA": "1.5", "MAX": "967", "MIN": "241.75"},
+    "2015": {"COLA": " ", "MAX": " ", "MIN": " "},
+    "2016": {"COLA": " ", "MAX": " ", "MIN": " "},
+    "2017": {"COLA": " ", "MAX": " ", "MIN": " "},
+    "2018": {"COLA": " ", "MAX": " ", "MIN": " "},
+    "2019": {"COLA": " ", "MAX": " ", "MIN": " "},
+    "2020": {"COLA": " ", "MAX": " ", "MIN": " "},
     };
 
     this.setWeeksDueWithDates = setWeeksDueWithDates;
@@ -127,8 +133,8 @@ function benefit() {
         /* don't know the purpose here, kill it */
         this.rateYear = tempRateYear;
         /* REVISIT ASAP: Handles edge case where first year exceeds the max cola. Adds an empty benefit so the resulting array still
-begins at [1]. First year max scenarios are a work in progress.
-*/
+        begins at [1]. 
+        */
 
         if ((Number(this.compRate) > Number(this.rates[startRateYear]["MAX"])) && (Number(rateYear) > 1974 && Number(rateYear) <= startYear)) {
             benPeriod = {};
