@@ -107,76 +107,73 @@
 	</script>
 	</head>
 
-<body>
+	<body>
 
-	<div id="Nav">
-		<ul>
-			<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
-			<li><a href="index.html">Main</a></li>
-			<li><a href="BasicCalc.html">Basic Calculator</a></li>
-			<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
-			<li>Calculate Lump Sum</li>
-			<li><a href="interest.html">Interest Calculator</a></li>
-			<li><a href="COLACalc.html">COLA Calculator</a></li>
-		</ul>
-	</div>
+		<div id="Nav">
+			<ul>
+				<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+				<li><a href="index.html">Main</a></li>
+				<li><a href="BasicCalc.html">Basic Calculator</a></li>
+				<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+				<li>Calculate Lump Sum</li>
+				<li><a href="interest.html">Interest Calculator</a></li>
+				<li><a href="COLACalc.html">COLA Calculator</a></li>
+			</ul>
+		</div>
 
-<div id="Container">
-	<div id="Calculator">
-	<h1>Lump Sum Benefit Calculator</h1>
-		<form id="LSCalcApp">
-			<fieldset name="requiredFields">
-				<legend>Enter Required Benefit Info</legend>
-					<div align="left">
-						
-						<label for="DOI">Accident Date</label>
-						<input type="text" name="DOI" value="" id="DOI" class="date" maxlength="10" size="10" ><br>
+		<div id="Container">
+			<div id="Calculator">
+				<h1>Lump Sum Benefit Calculator</h1>
+					<form id="LSCalcApp">
+						<fieldset name="requiredFields">
+							<legend>Enter Required Benefit Info</legend>
+								<div align="left">
+									
+									<label for="DOI">Accident Date</label>
+									<input type="text" name="DOI" value="" id="DOI" class="date" maxlength="10" size="10" ><br>
 
-						<label for="startDate">Start Date</label>
-						<input type="text" name="startDate" value="" class="date" id="startDate" maxlength="10" size="10" ><br>
+									<label for="startDate">Start Date</label>
+									<input type="text" name="startDate" value="" class="date" id="startDate" maxlength="10" size="10" ><br>
 
-						<label for="PPWksAwarded">PP Weeks Awarded</label>
-						<input type="text" name="PPWksAwarded" value="" id="PPWksAwarded" maxlength="10" size="10" ><br>
+									<label for="PPWksAwarded">PP Weeks Awarded</label>
+									<input type="text" name="PPWksAwarded" value="" id="PPWksAwarded" maxlength="10" size="10" ><br>
 
-						<label for="compRate">Compensation Rate</label>
-						<input type="text" name="compRate" value="" id="compRate" maxlength="7" size="7" ><br>
+									<label for="compRate">Compensation Rate</label>
+									<input type="text" name="compRate" value="" id="compRate" maxlength="7" size="7" ><br>
 
-						<label for="requestDate">Lump Sum Request Date</label>
-						<input type="text" name="requestDate" value="" class="date" id="requestDate" maxlength="10" size="10" ><br>
-						<input type="button" name="calculate" value="Calculate" onclick="Calculate()">
-					</div>
-			</fieldset>
+									<label for="requestDate">Lump Sum Request Date</label>
+									<input type="text" name="requestDate" value="" class="date" id="requestDate" maxlength="10" size="10" ><br>
+									<input type="button" name="calculate" value="Calculate" onclick="Calculate()">
+								</div>
+						</fieldset>
 
-			<fieldset name="benefitData">
-				<legend>Lump Sum Details</legend>
-					<div align="right">
-						<label for="PPWksAccrued">PP Weeks Accrued</label>
-							<input type="text" name="PPWksAccrued" value="" id="PPWksAccrued" maxlength = "7" size="12" readonly><br>
+						<fieldset name="benefitData">
+							<legend>Lump Sum Details</legend>
+								<div align="right">
+									<label for="PPWksAccrued">PP Weeks Accrued</label>
+										<input type="text" name="PPWksAccrued" value="" id="PPWksAccrued" maxlength = "7" size="12" readonly><br>
 
-						<label for="throughDate">Through Date</label>
-							<input type="text" name="throughDate" value="" id="throughDate" size="12" maxlength="10" readonly><br>
+									<label for="throughDate">Through Date</label>
+										<input type="text" name="throughDate" value="" id="throughDate" size="12" maxlength="10" readonly><br>
 
-						<label for="lumpSumWks">Lump Sum Weeks</label>
-							<input type="text" name="lumpSumWks" value="" id="lumpSumWks" size="12" maxlength="7" readonly><br>
+									<label for="lumpSumWks">Lump Sum Weeks</label>
+										<input type="text" name="lumpSumWks" value="" id="lumpSumWks" size="12" maxlength="7" readonly><br>
 
-						<label for="discountedRate">Discount Compensation Rate</label>
-							<input type="text" name="discountedRate" value=""  id="discountedRate" size="12" maxlength="7" readonly><br>
+									<label for="discountedRate">Discount Compensation Rate</label>
+										<input type="text" name="discountedRate" value=""  id="discountedRate" size="12" maxlength="7" readonly><br>
 
-						<label for="LSAmount">Lump Sum Amount</label>
-							<input type="text" name="LSAmount" value="" id="LSAmount" size="12" readonly><br>
+									<label for="LSAmount">Lump Sum Amount</label>
+										<input type="text" name="LSAmount" value="" id="LSAmount" size="12" readonly><br>
 
-						<label for="discount">Discount Amount</label>
-							<input type="text" name="discount" value=""  id="discount" size="12" readonly><br>
-							
-							<input type="reset" name="reset" value="Reset Form">
-					</div>
+									<label for="discount">Discount Amount</label>
+										<input type="text" name="discount" value=""  id="discount" size="12" readonly><br>
+										
+										<input type="reset" name="reset" value="Reset Form">
+								</div>
 
-			</fieldset>
-	</form>
-
-
-</div>
-	
-</div>
-</body>
+						</fieldset>
+				</form>
+			</div>
+		</div>
+	</body>
 </html>

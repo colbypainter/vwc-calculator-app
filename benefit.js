@@ -645,7 +645,7 @@ so, end the benefit at 06/30 of the current year */
 
     }
 
-    this.getWeeksPP = getWeeksPP; /* Passed test, BUT body part needs to be an array not pulled from HTML */
+    this.getWeeksPP = getWeeksPP; 
 
     function getWeeksPP() {
         this.weeksDue = this.bodyPart * (this.percentLoss / 100);

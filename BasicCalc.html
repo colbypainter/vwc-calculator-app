@@ -184,83 +184,83 @@
 			</ul>
 		</div>
 
-	<div id="Container">
-		<div id="Calculator">
-		<h1>Basic Benefit Calculator</h1>
-			<form id="BasicCalcApp" class="benefit_row">
-				<fieldset name="benefitSelect">
-					<legend>Choose a Benefit Type</legend>
-						<div align="left">
-							<select id="typeOfBenefit"  class="type_of_benefit" >
-								<option value="">Select Benefit Type</option>
-								<option value="TT">TT - Temporary Total</option>
-								<option value="PP">PP - Permanent Partial</option>
-								<option value="TP">TP - Temporary Partial</option>
-							</select>
-							<select id="bodyPartType" class="body_part_type" >
-								<option value="">Select Body Part</option>
-								<option value="60">Thumb</option>
-								<option value="35">First Finger</option>
-								<option value="30">Second Finger</option>
-								<option value="20">Third Finger</option>
-								<option value="15">Fourth Finger</option>
-								<option value="30">Great Toe</option>
-								<option value="10">Second Toe</option>
-								<option value="10">Third Toe</option>
-								<option value="10">Fourth Toe</option>
-								<option value="10">Fifth Toe</option>
-								<option value="150">Hand</option>
-								<option value="200">Arm</option>
-								<option value="125">Foot</option>
-								<option value="175">Leg</option>
-								<option value="100">Vision</option>
-								<option value="50">Hearing</option>
-								<option value="50">Pneumoconiosis Stage 1</option>
-								<option value="100">Pneumoconiosis Stage 2</option>
-								<option value="300">Pneumoconiosis Stage 3</option>
-								<option value="50">Asbestosis - Stage 1</option>
-								<option value="100">Asbestosis - Stage 2</option>
-								<option value="300">Asbestosis - Stage 3</option>
-								<option value="50">Byssinosis</option>
-								<option value="60">Whole Body</option>
-							</select>
-							<label for="percentLoss" id="lossLabel">% Loss</label>
-							<input type="text" name="percentLoss" value="" id="percentLoss" class="percent_loss" maxlength="5" size="5" >
-					</div>
-				</fieldset>
-				<fieldset name="benefitData">
-					<legend>Enter Benefit Information</legend>
-						<div align="left">
-							<label for="DOI">Accident Date</label>
-								<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI datepicker date" size="10" ><br>
-							<label for="AWW">Average Weekly Wage</label>
-								<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7"  ><br>
-							<label for="PWW">Partial Weekly Wage</label>
-								<input type="text" name="Partial Weekly Wage" value="" id="PWW" class="P_WW" size="7" maxlength="7" disabled="disabled"><br>
-							<label for="compRate">Compensation Rate</label>
-								<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" > <br>
-							<label for="startDate">Start Date</label>
-								<input type="text" name="Start Date" value="" id="startDate" class="start_date datepicker date" size="10" ><br>
-							<label for="endDate">End Date</label>
-								<input type="text" name="End Date" value=""  id="endDate" class="end_date datepicker date" size="10" maxlength ="10"><br>
-							<label for="weeksDue">Weeks Due</label>
-								<input type="text" name="Weeks Due" value="" id="weeksDue" class="weeks_due" size="10" maxlength="10"><br>
+		<div id="Container">
+			<div id="Calculator">
+			<h1>Basic Benefit Calculator</h1>
+				<form id="BasicCalcApp" class="benefit_row">
+					<fieldset name="benefitSelect">
+						<legend>Choose a Benefit Type</legend>
+							<div align="left">
+								<select id="typeOfBenefit"  class="type_of_benefit" >
+									<option value="">Select Benefit Type</option>
+									<option value="TT">TT - Temporary Total</option>
+									<option value="PP">PP - Permanent Partial</option>
+									<option value="TP">TP - Temporary Partial</option>
+								</select>
+								<select id="bodyPartType" class="body_part_type" >
+									<option value="">Select Body Part</option>
+									<option value="60">Thumb</option>
+									<option value="35">First Finger</option>
+									<option value="30">Second Finger</option>
+									<option value="20">Third Finger</option>
+									<option value="15">Fourth Finger</option>
+									<option value="30">Great Toe</option>
+									<option value="10">Second Toe</option>
+									<option value="10">Third Toe</option>
+									<option value="10">Fourth Toe</option>
+									<option value="10">Fifth Toe</option>
+									<option value="150">Hand</option>
+									<option value="200">Arm</option>
+									<option value="125">Foot</option>
+									<option value="175">Leg</option>
+									<option value="100">Vision</option>
+									<option value="50">Hearing</option>
+									<option value="50">Pneumoconiosis Stage 1</option>
+									<option value="100">Pneumoconiosis Stage 2</option>
+									<option value="300">Pneumoconiosis Stage 3</option>
+									<option value="50">Asbestosis - Stage 1</option>
+									<option value="100">Asbestosis - Stage 2</option>
+									<option value="300">Asbestosis - Stage 3</option>
+									<option value="50">Byssinosis</option>
+									<option value="60">Whole Body</option>
+								</select>
+								<label for="percentLoss" id="lossLabel">% Loss</label>
+								<input type="text" name="percentLoss" value="" id="percentLoss" class="percent_loss" maxlength="5" size="5" >
 						</div>
-						<div align="right">
-							<label for="compensationDue">Compensation Due</label>
-							<input type="text" id="compensationDue" class="compensation_due" size="12" readonly><br>
-							<label for="compensationPaid">Compensation Paid</label>
-							<input type="text" id="compensationPaid" class="compensation_paid" size="12" maxlength=12><br>
-							<label for="difference">Difference</label>
-							<input type="text" id="difference" class="difference" size="12" readonly>
-						</div>
-				</fieldset>
-				<input type="submit" name="calculate" value="Calculate">
-				<input type="reset" name="reset" value="Reset Form">
-		</form>
+					</fieldset>
+					<fieldset name="benefitData">
+						<legend>Enter Benefit Information</legend>
+							<div align="left">
+								<label for="DOI">Accident Date</label>
+									<input type="text" name="Date of Injury" value="" id="DOI" class="_DOI datepicker date" size="10" ><br>
+								<label for="AWW">Average Weekly Wage</label>
+									<input type="text" name="Average Weekly Wage" value="" id="AWW" class="A_WW" size="7" maxlength="7"  ><br>
+								<label for="PWW">Partial Weekly Wage</label>
+									<input type="text" name="Partial Weekly Wage" value="" id="PWW" class="P_WW" size="7" maxlength="7" disabled="disabled"><br>
+								<label for="compRate">Compensation Rate</label>
+									<input type="text" name="Compensation Rate" value=""  id="compRate" class="comp_rate" size="7" maxlength="7" > <br>
+								<label for="startDate">Start Date</label>
+									<input type="text" name="Start Date" value="" id="startDate" class="start_date datepicker date" size="10" ><br>
+								<label for="endDate">End Date</label>
+									<input type="text" name="End Date" value=""  id="endDate" class="end_date datepicker date" size="10" maxlength ="10"><br>
+								<label for="weeksDue">Weeks Due</label>
+									<input type="text" name="Weeks Due" value="" id="weeksDue" class="weeks_due" size="10" maxlength="10"><br>
+							</div>
+							<div align="right">
+								<label for="compensationDue">Compensation Due</label>
+								<input type="text" id="compensationDue" class="compensation_due" size="12" readonly><br>
+								<label for="compensationPaid">Compensation Paid</label>
+								<input type="text" id="compensationPaid" class="compensation_paid" size="12" maxlength=12><br>
+								<label for="difference">Difference</label>
+								<input type="text" id="difference" class="difference" size="12" readonly>
+							</div>
+					</fieldset>
+					<input type="submit" name="calculate" value="Calculate">
+					<input type="reset" name="reset" value="Reset Form">
+				</form>
 
-	</div>
-		
-	</div>
+			</div>
+			
+		</div>
 	</body>
 </html>

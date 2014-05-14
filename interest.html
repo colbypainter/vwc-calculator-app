@@ -119,80 +119,77 @@
 
 	</head>
 
-<body>
+	<body>
 
-	<div id="Nav">
-		<ul>
-			<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
-			<li><a href="index.html">Main</a></li>
-			<li><a href="BasicCalc.html">Basic Calculator</a></li>
-			<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
-			<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
-			<li>Interest Calculator</li>
-			<li><a href="COLACalc.html">COLA Calculator</a></li>
-		</ul>
-	</div>
+		<div id="Nav">
+			<ul>
+				<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
+				<li><a href="index.html">Main</a></li>
+				<li><a href="BasicCalc.html">Basic Calculator</a></li>
+				<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+				<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+				<li>Interest Calculator</li>
+				<li><a href="COLACalc.html">COLA Calculator</a></li>
+			</ul>
+		</div>
 
-<div id="Container">
-	<div id="Calculator" style="height: 535px">
-	<h1>Interest Calculator</h1>
-		<form id="interest-calc">
-			<fieldset name="requiredFields">
-				<legend>Enter Required Benefit Info</legend>
-					<div align="left">
-						
-						<label for="DOI">Accident Date</label>
-						<input type="text" name="DOI" class="datepicker date" value="" id="DOI" maxlength="10" size="10" ><br>
+		<div id="Container">
+			<div id="Calculator" style="height: 535px">
+				<h1>Interest Calculator</h1>
+					<form id="interest-calc">
+						<fieldset name="requiredFields">
+							<legend>Enter Required Benefit Info</legend>
+								<div align="left">
+									
+									<label for="DOI">Accident Date</label>
+									<input type="text" name="DOI" class="datepicker date" value="" id="DOI" maxlength="10" size="10" ><br>
 
-						<label for="opinion-date">Date of Opinion</label>
-						<input type="text" name="opinion-date" class="datepicker date" value="" id="opinion-date" maxlength="10" size="10" ><br>
+									<label for="opinion-date">Date of Opinion</label>
+									<input type="text" name="opinion-date" class="datepicker date" value="" id="opinion-date" maxlength="10" size="10" ><br>
 
-						<label for="start-date">Benefit Start Date</label>
-						<input type="text" name="start-date" class="datepicker date" value="" id="start-date" maxlength="10" size="10" ><br>
+									<label for="start-date">Benefit Start Date</label>
+									<input type="text" name="start-date" class="datepicker date" value="" id="start-date" maxlength="10" size="10" ><br>
 
-						<label for="endDate">Benefit End Date</label>
-						<input type="text" name="end-date" class="datepicker date" value="" id="end-date" maxlength="10" size="10" ><br>
+									<label for="endDate">Benefit End Date</label>
+									<input type="text" name="end-date" class="datepicker date" value="" id="end-date" maxlength="10" size="10" ><br>
 
-						<label for="compRate">Compensation Rate</label>
-						<input type="text" name="comp-rate" value="" id="comp-rate" maxlength="7" size="7" ><br>
+									<label for="compRate">Compensation Rate</label>
+									<input type="text" name="comp-rate" value="" id="comp-rate" maxlength="7" size="7" ><br>
 
-						<label for="paid-date">Date Paid</label>
-						<input type="text" name="paid-date" class="datepicker date" value="" id="paid-date" maxlength="10" size="10" ><br>
-				<input type="submit" name="calculate" value="Calculate">
-					</div>
-			</fieldset>
+									<label for="paid-date">Date Paid</label>
+									<input type="text" name="paid-date" class="datepicker date" value="" id="paid-date" maxlength="10" size="10" ><br>
+							<input type="submit" name="calculate" value="Calculate">
+								</div>
+						</fieldset>
 
+						<fieldset name="interestData">
+							<legend>Interest Details</legend>
+								<div align="right">
+									<label for="weeks-due">Weeks Due</label>
+										<input type="text" name="weeks-due" value="" id="weeks-due" maxlength = "7" size="15" readonly><br>
 
-			<fieldset name="interestData">
-				<legend>Interest Details</legend>
-					<div align="right">
-						<label for="weeks-due">Weeks Due</label>
-							<input type="text" name="weeks-due" value="" id="weeks-due" maxlength = "7" size="15" readonly><br>
+									<label for="interest-rate">Daily Interest Rate</label>
+										<input type="text" name="interest-rate" value="" id="interest-rate" size="15" maxlength="10" readonly><br>
 
-						<label for="interest-rate">Daily Interest Rate</label>
-							<input type="text" name="interest-rate" value="" id="interest-rate" size="15" maxlength="10" readonly><br>
+									<label for="due-at-opinion">Due At Opinion</label>
+										<input type="text" name="due-at-opinion" value="" id="due-at-opinion" size="15" maxlength="15" readonly><br>
 
-						<label for="due-at-opinion">Due At Opinion</label>
-							<input type="text" name="due-at-opinion" value="" id="due-at-opinion" size="15" maxlength="15" readonly><br>
+									<label for="daily-rate">Daily Rate</label>
+										<input type="text" name="daily-rate" value=""  id="daily-rate" size="15" maxlength="7" readonly><br>
 
-						<label for="daily-rate">Daily Rate</label>
-							<input type="text" name="daily-rate" value=""  id="daily-rate" size="15" maxlength="7" readonly><br>
+									<label for="days-delayed">Days Delayed</label>
+										<input type="text" name="days-delayed" value="" id="days-delayed" size="15" readonly><br>
 
-						<label for="days-delayed">Days Delayed</label>
-							<input type="text" name="days-delayed" value="" id="days-delayed" size="15" readonly><br>
+									<label for="interest-due">Interest Due</label>
+										<input type="text" name="interest-due" value=""  id="interest-due" size="15" readonly><br>
 
-						<label for="interest-due">Interest Due</label>
-							<input type="text" name="interest-due" value=""  id="interest-due" size="15" readonly><br>
-
-						<label for="total-comp-due">Total Compensation</label>
-							<input type="text" name="total-comp-due" value="" id="total-comp-due" size="15" readonly><br>
-						<input type="reset" name="reset" value="Reset Form">
-					</div>
-			</fieldset>
-	</form>
-
-</div>
-	
-</div>
-</body>
+									<label for="total-comp-due">Total Compensation</label>
+										<input type="text" name="total-comp-due" value="" id="total-comp-due" size="15" readonly><br>
+									<input type="reset" name="reset" value="Reset Form">
+								</div>
+						</fieldset>
+				</form>
+			</div>
+		</div>
+	</body>
 </html>
