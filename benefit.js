@@ -81,7 +81,8 @@ function benefit() {
         this.weeksDue = this.weeksDue / 100000;
         return this.weeksDue;
     }
-
+    // This function will get a total Cola Due amount and create all detailed
+    // COLA periods.
     this.getCola = getCola;
      function getCola() {
         var rateYear = setRateYear(this.DOI);
@@ -118,7 +119,8 @@ function benefit() {
         /* use incYear to iterate the year up in the MAX branch without changing the start date */
         var incYear = startYear;
         /* don't know what tempRateYear is for, should probably kill it */
-        var tempRateYear = rateYear;
+        // var tempRateYear = rateYear;
+
         /* get the rate year for the year of the benefit start date */
         var startRateYear = setRateYear(begDate);
         /* effective rate year will be adjusted throughout the run of benefits */
@@ -131,9 +133,10 @@ function benefit() {
         /* cola rate variable to increase the rate through each iteration */
         var colaRate = 0;
         /* don't know the purpose here, kill it */
-        this.rateYear = tempRateYear;
+        // this.rateYear = tempRateYear;
+        
         /* REVISIT ASAP: Handles edge case where first year exceeds the max cola. Adds an empty benefit so the resulting array still
-        begins at [1]. 
+        begins at [1].
         */
 
         if ((Number(this.compRate) > Number(this.rates[startRateYear]["MAX"])) && (Number(rateYear) > 1974 && Number(rateYear) <= startYear)) {
@@ -146,9 +149,8 @@ function benefit() {
             this.colaPeriods.push(benPeriod);
             colaRate = Number(this.rates[rateYear]["COLA"]) / 100;
             this.compRate = (1 + colaRate) * this.compRate;
-            /*
-            console.log(benPeriod);
-            */
+
+            // console.log(benPeriod);
 
         }
         /* A:0 If Accident Date is before 07/01/75, it is COLA ineligible */
@@ -271,7 +273,7 @@ so, end the benefit at 06/30 of the current year */
                             this.startDate = "07" + "/" + "01" + "/" + incYear;
                             localRateYear = Number(localRateYear) + 1;
                             currentEndDate = new Date(endDate);
-                            
+
                             } else {
                                 endDate = this.endDate;
                                 weeks = getWeeks(begDate, endDate);
@@ -481,12 +483,12 @@ so, end the benefit at 06/30 of the current year */
                             this.colaPeriods.push(benPeriod);
                             /*
                             console.log(benPeriod);
-                            */ 
-                            
+                            */
+
                             this.colaDue = this.colaDue + Number(colaDue);
                             this.startDate = "07" + "/" + "01" + "/" + incYear;
                             localRateYear = Number(localRateYear) + 1;
-                            
+
                             } else {
                                 endDate = this.endDate;
                                 weeks = getWeeks(begDate, endDate);
@@ -519,13 +521,13 @@ so, end the benefit at 06/30 of the current year */
                                 this.colaPeriods.push(benPeriod);
                                 this.colaDue = this.colaDue + Number(colaDue);
 
-                                
+
                                 // console.log(benPeriod);
-                                
+
 
                                 this.startDate = "07" + "/" + "01" + "/" + incYear;
                                 localRateYear = Number(localRateYear) + 1;
-                                
+
                             }
                         }
                 }
@@ -541,7 +543,7 @@ so, end the benefit at 06/30 of the current year */
                 var startMonth = new Date(begDate);
                 startMonth = startMonth.getMonth() + 1;
                 endDate = this.endDate;
-                
+
                 /*
                 if (startMonth < 10 && (Number(permStartDate.getMonth()) + 1) < 10) {
                 */
@@ -598,7 +600,6 @@ so, end the benefit at 06/30 of the current year */
         this.colaDue = Math.round(this.colaDue * 100)/100;
         return this.colaDue;
     }
-        
 
     this.setRateYear = setRateYear;
 
@@ -645,7 +646,7 @@ so, end the benefit at 06/30 of the current year */
 
     }
 
-    this.getWeeksPP = getWeeksPP; 
+    this.getWeeksPP = getWeeksPP;
 
     function getWeeksPP() {
         this.weeksDue = this.bodyPart * (this.percentLoss / 100);
@@ -665,6 +666,9 @@ so, end the benefit at 06/30 of the current year */
         var days = ("." + splitWeeks[1]);
         var weeks = Number(splitWeeks[0]);
 
+        // Structured below so it will properly handle end dates for PP periods.
+        // PP periods can run, for example, for 3.5 weeks. This will adjust the
+        // half day accordingly so the End Date is correct.
         if (days > 0 && days < .14286) {
             splitWeeks[1] = .14286;
             weeksDue = Number(splitWeeks[0]) + Number(splitWeeks[1]);
@@ -716,14 +720,14 @@ so, end the benefit at 06/30 of the current year */
                         this.weeksDue = this.setWeeksDueWithDates();
                 }
             break;
-           
+
             case "TP":
                 if (this.endDate !== "" && this.weeksDue === "") {
                     this.weeksDue = this.setWeeksDueWithDates();
                 } else if (this.endDate === "" && this.weeksDue !== "") {
                     this.endDate = this.getEndDate();
                 }
-                
+
         }
     }
 
