@@ -5,23 +5,61 @@
 <title>VWC Calculator App</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 
+<!-- PureCSS for menu only (non-responsive) -->
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/menus-min.css">
+
+<!-- PureCSS for grids -->
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+
+<!-- PureCSS for buttons -->
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/buttons-min.css">
+
 </head>
 
 <body>
-<div id="Container">
-	<div id="Calculator" class="main">
-	<h1>Welcome to the VWC Calculator App</h1>
-	<h4>This is a demo. Please direct questions or problems to Colby at samuel.painter@workcomp.virginia.gov</h4>
-		<ul>
-			<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
-			<li><a href="BasicCalc.html">Basic Calculator</a></li>
-			<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
-			<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
-			<li><a href="interest.html">Interest Calculator</a></li>
-			<li><a href="COLACalc.html">COLA Calculator</a></li>
-		</ul>
+
+<!-- The navigation menu -->
+<div id="Nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+
+	<ul>
+
+		<li class="pure-menu-selected"><a href="index.html">Main</a></li>
+		<li><a href="BasicCalc.html">Basic Calculator</a></li>
+		<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+		<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+		<li><a href="interest.html">Interest Calculator</a></li>
+		<li><a href="COLACalc.html">COLA Calculator</a></li>
+	</ul>
 </div>
-	
+
+
+<div id="Container" class="pure-g">
+	<div id="welcome_nav" class="main pure-u-1">
+	<h1>Welcome to the VWC Calculator Application</h1>
+	<h4>Choose one of the calculators below to get started.</h4>
+			<div class="pure-u-1-5">
+				<a class="pure-button pure-button-primary" href="BasicCalc.html">Basic Calculator</a>
+			</div>
+			<div class="pure-u-1-5">
+				<a class="pure-button pure-button-primary" href="MultiplePeriods.html">Multiple Periods</a>
+			</div>
+			<div class="pure-u-1-5">
+				<a class="pure-button pure-button-primary" href="LumpSum.html">Calculate Lump Sum</a>
+			</div>
+				<a class="pure-button pure-button-primary" href="interest.html">Interest Calculator</a>
+			<div class="pure-u-1-5">
+				<a class="pure-button pure-button-primary" href="COLACalc.html">COLA Calculator</a>
+			</div>
 </div>
+
+</div>
+
+<!-- New footer for redesign -->
+<div id="footer">
+	<p>&copy 2014 Virginia Workers' Compensation Commission</p>
+	<p><a href="http://www.vwc.state.va.us">VWC Public Website</a></p>
+</div>
+
+
 </body>
 </html>

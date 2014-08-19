@@ -1,6 +1,6 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	//background-color: #2570a8;	
+	//background-color: #2570a8;
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -31,7 +31,7 @@ fieldset {
 	height: auto;
 	margin: 0px auto;
 	text-align: center;
-    float: left;
+  /* Commenting out for PureCSS reformat float: left; */
 }
 
 #Container label {
@@ -39,6 +39,20 @@ fieldset {
 	font-weight: normal;
 }
 
+/* New Welcome Nav formatting */
+
+#welcome_nav a {
+	width: 200px;
+	margin-bottom: 5px;
+	background-color: #042037;
+}
+
+#welcome_nav {
+	width: 100%;
+}
+
+
+/* Commenting out Nav formatting for PureCSS
 #Nav {
 	border: none;
 	color: blue;
@@ -46,8 +60,9 @@ fieldset {
 	height: auto;
 	margin: 0px 20px 0px 0px;
 	//background-color: #F1F8FF;
-    float: left; 
+    float: left;
 }
+
 
 .main ul li {
 	margin-left: auto;
@@ -77,6 +92,97 @@ color: #F1F8FF;
 font-weight: bold;
 padding: 10px;
 }
+*/
+
+/* New menu formatting with PureCSS */
+
+.pure-menu ul {
+
+	text-align: center;
+	background-color: #042037;
+	width: 100%;
+	color: #718EA4;
+
+}
+
+.pure-menu ul li a{
+	color: white;
+}
+
+.pure-menu ul li a:hover {
+	color: #042037;
+}
+
+.pure-menu-selected a {
+	background-color: #718EA4;
+}
+
+/* End of new nav menu formatting */
+
+/* Begin formatting for new explainer boxes. */
+#ref_content {
+	width: 1000px;
+	margin: auto;
+	margin-bottom: 10px;
+}
+#exp_box {
+	width: 300px;
+	height: 250px;
+	text-align: left;
+	display: inline-block;
+	// border: 1px solid black;
+	padding: 8px;
+	margin: auto;
+}
+#rate_box {
+	width: 300px;
+	height: 250px;
+	text-align: left;
+	display: inline-block;
+	vertical-align: top;
+	// border: 1px solid black;
+	padding: 8px;
+	margin: auto;
+}
+#dw_box {
+	width: 300px;
+	height: 250px;
+	text-align: left;
+	// border: 1px solid black;
+	display: inline-block;
+	vertical-align: top;
+	padding: 8px;
+	margin: auto;
+	text-align: center;
+}
+
+.rate_emph {
+	font-weight: bold;
+}
+
+.pure-table {
+	width: 100%;
+	margin: auto;
+	font-size: 80%;
+	text-align: center;
+}
+
+.pure-table th {
+	text-align: center;
+	background-color: #042037;
+	color: white;
+}
+
+/* End of explainer box formatting */
+
+/* New footer formatting for redesign */
+#footer {
+	font-size: 80%;
+	border-top: 1px solid black;
+	margin-top: 100px;
+	text-align: center;
+}
+
 
 .accordion {
 	color: #2570a8;
@@ -87,7 +193,7 @@ padding: 10px;
 	font-size: 14px;
 }
 
-
+/* Commenting out to allow Pure CSS to handle table format
 table {
 	border-collapse: collapse;
 }
@@ -104,6 +210,8 @@ table, th, td {
 	text-align: center;
 }
 
+*/
+
 .ui-datepicker {
 	font-size: 10px;
 }
@@ -111,11 +219,13 @@ table, th, td {
 
 #Calculator {
 	//background-color: #F1F8FF;
-	position: absolute;
+	/* Commenting out for PureCSS position: absolute; */
 	color:#2570a8;
 	border: 0px solid blue;
-	border-radius: 35px; 
+	border-radius: 35px;
 	width: 700px;
+	/* Added auto margin to center calculator */
+	margin: auto;
 	height: 480px;
 }
 
@@ -183,4 +293,3 @@ legend {
 
 .stripe-row { background-color: #DEEDFC; }
 .alert { background-color: #F5AEBE; }
-

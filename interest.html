@@ -11,6 +11,17 @@
 		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 		<script type = "text/javascript" src="jquery.maskedinput.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
+
+
+		<!-- PureCSS for menu only (non-responsive) -->
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/menus-min.css">
+		<!-- PureCSS for grids -->
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+		<!-- PureCSS for table only -->
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/tables-min.css">
+
+
+
 		<script type="text/javascript">
 
 		$(document).ready(function() {
@@ -49,7 +60,7 @@
 
 				/* Calculate days delayed and write to form. Delay = Date of Opinion - Date Paid */
 				var delay = new benefit();
-				delay.startDate = $(this).find("#opinion-date").first().val(); 
+				delay.startDate = $(this).find("#opinion-date").first().val();
 				delay.endDate = $(this).find("#paid-date").first().val();
 				var daysDelayed = Math.round(delay.setWeeksDueWithDates()*7) - 1;
 				if (daysDelayed < 0) {
@@ -121,26 +132,79 @@
 
 	<body>
 
-		<div id="Nav">
+		<!-- The navigation menu -->
+		<div id="Nav" class="pure-menu pure-menu-open pure-menu-horizontal">
+
 			<ul>
-				<li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
 				<li><a href="index.html">Main</a></li>
 				<li><a href="BasicCalc.html">Basic Calculator</a></li>
 				<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
 				<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
-				<li>Interest Calculator</li>
+				<li class="pure-menu-selected" ><a href="interest.html">Interest Calculator</a></li>
 				<li><a href="COLACalc.html">COLA Calculator</a></li>
 			</ul>
 		</div>
 
-		<div id="Container">
+			<!-- New Divs for calc explainers. Optional improvements. -->
+			<div id="ref_content" class="pure-g">
+				<div id="exp_box" class="pure-u-1-3">
+					<h3>About This Calculator</h3>
+					<p>If payment of benefits is delayed due to appeal, the injured worker
+					may be eligible for interest.  Use this calculator to determine the amount of
+					interest that may be due.</p>
+				</div>
+				<div id="rate_box" class="pure-u-1-3">
+					<h3>Rate Information</h3>
+					<p>Click the table below to display yearly maximum and minimum
+						compensation rates, as well as the Cost of Living percentage for each year.
+						Please note that rate years begin on <span class="rate_emph">July 1st</span>
+						and conclude on <span class="rate_emph">June 30th</span> each year.</p>
+
+				</div>
+					<div id="dw_box" class="pure-u-1-3">
+						<h3>Day-Week Conversions</h3>
+							<table id="day-week-ref" class="pure-table pure-table-bordered">
+							<thead>
+								<th>Days</th>
+								<th>Weeks</th>
+							</thead>
+							<tr>
+								<td>1 Day</td>
+								<td>.14286 Weeks</td>
+							</tr>
+							<tr>
+								<td>2 Days</td>
+								<td>.28571 Weeks</td>
+							</tr>
+							<tr>
+								<td>3 Days</td>
+								<td>.42857 Weeks</td>
+							</tr>
+							<tr>
+								<td>4 Days</td>
+								<td>.57143 Weeks</td>
+							</tr>
+							<tr>
+								<td>5 Days</td>
+								<td>.71429 Weeks</td>
+							</tr>
+							<tr>
+								<td>6 Days</td>
+								<td>.85714 Weeks</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>  <!-- End of NEW reference div -->
+
+			<div id="Container">
 			<div id="Calculator" style="height: 535px">
-				<h1>Interest Calculator</h1>
+				<h1>Calculate Interest</h1>
 					<form id="interest-calc">
 						<fieldset name="requiredFields">
 							<legend>Enter Required Benefit Info</legend>
 								<div align="left">
-									
+
 									<label for="DOI">Accident Date</label>
 									<input type="text" name="DOI" class="datepicker date" value="" id="DOI" maxlength="10" size="10" ><br>
 
@@ -191,5 +255,12 @@
 				</form>
 			</div>
 		</div>
+
+		<!-- New footer for redesign -->
+		<div id="footer">
+			<p>&copy 2014 Virginia Workers' Compensation Commission</p>
+			<p><a href="http://www.vwc.state.va.us">VWC Public Website</a></p>
+		</div>
+
 	</body>
 </html>

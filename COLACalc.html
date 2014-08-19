@@ -11,6 +11,16 @@
 		<script type="text/javascript" src="jquery-ui-1.10.4.custom.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
         <script type = "text/javascript" src="jquery.maskedinput.js"></script>
+
+
+			<!-- PureCSS for menu only (non-responsive) -->
+			<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/menus-min.css">
+			<!-- PureCSS for grids -->
+			<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+			<!-- PureCSS for table only -->
+			<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/tables-min.css">
+
+
 		<script type="text/javascript">
 
 			$(document).ready(function() {
@@ -28,7 +38,7 @@
                 ben.endDate = $(this).find("#end_date").first().val();
                 ben.compRate = $(this).find("#comp_rate").first().val();
                 ben.getCola();
-             
+
                 // Find jQuery elements here
                 var $benRowContainer = $("#row-wrap");
                 var $benRowTemplate = $("#benefit-row-template");
@@ -36,12 +46,12 @@
                 var rowHighlight = false;
                 var currentYear;
 
-               
+
                 // Clear any previous result rows:
                 $benRowContainer.empty();
-                     
+
                 for(var i=1; i < ben.colaPeriods.length; i++){
-                    
+
                     // Copy the template element
                     $benRow = $benRowTemplate.clone();
                     colaPeriod = ben.colaPeriods[i];
@@ -59,18 +69,18 @@
                     $benRow.find(".rate_year").html( colaPeriod['year'] );
 
                     // Set Total values
-                    var colaPaid = $(this).find("#cola_paid").first().val(); 
+                    var colaPaid = $(this).find("#cola_paid").first().val();
                     $("#total-row").find("#compounded-comp-rate").val(ben.compoundedCompRate);
                     $("#total-row").find("#max-in-effect").val(ben.maxInEffect);
                     $("#total-row").find("#total-due").val(ben.colaDue);
                     $("#total-row").find("#total-diff").val(ben.colaDue - Number(colaPaid));
-                    
+
                     // Check for row highlighting:
                     if(currentYear != colaPeriod['year']){
                         currentYear = colaPeriod['year'];
                         rowHighlight = rowHighlight ? false : true;
                     }
-                    
+
                     if(rowHighlight){
                         $benRow.addClass('stripe-row');
                     } else {
@@ -92,7 +102,7 @@
                 }
                 return false;
 			});
-            
+
             $("#comp_rate").on("change", function() {
                     var ben = new benefit();
                     ben.DOI = $("#cola-inputs").find("#_DOI").first().val();
@@ -106,26 +116,78 @@
                     }
                     return false;
                 });
-            
+
 		});
 		</script>
 </head>
 <body>
-        <div id="Nav">
-            <ul>
-                <li><a href="http://www.vwc.state.va.us/portal/vwc-website">VWC Public Website</a><br><br></li>
-                <li><a href="index.html">Main</a></li>
-                <li><a href="BasicCalc.html">Basic Calculator</a></li>
-                <li><a href="MultiplePeriods.html">Multiple Periods</a></li>
-                <li><a href="LumpSum.html">Calculate Lump Sum</a></li>
-                <li><a href="interest.html">Interest Calculator</a></li>
-                <li>COLA Calculator</li>
-            </ul>
-        </div>
+				<!-- The navigation menu -->
+				<div id="Nav" class="pure-menu pure-menu-open pure-menu-horizontal">
 
-        <div id="Container">
+					<ul>
+						<li><a href="index.html">Main</a></li>
+						<li><a href="BasicCalc.html">Basic Calculator</a></li>
+						<li><a href="MultiplePeriods.html">Multiple Periods</a></li>
+						<li><a href="LumpSum.html">Calculate Lump Sum</a></li>
+						<li><a href="interest.html">Interest Calculator</a></li>
+						<li class="pure-menu-selected"><a href="COLACalc.html">COLA Calculator</a></li>
+					</ul>
+				</div>
+
+					<!-- New Divs for calc explainers. Optional improvements. -->
+					<div id="ref_content" class="pure-g">
+						<div id="exp_box" class="pure-u-1-3">
+							<h3>About This Calculator</h3>
+							<p>Use this calculator to determine the total amount due for a Cost of
+							Living Adjustment.</p>
+						</div>
+						<div id="rate_box" class="pure-u-1-3">
+							<h3>Rate Information</h3>
+							<p>Click the table below to display yearly maximum and minimum
+								compensation rates, as well as the Cost of Living percentage for each year.
+								Please note that rate years begin on <span class="rate_emph">July 1st</span>
+								and conclude on <span class="rate_emph">June 30th</span> each year.</p>
+
+						</div>
+							<div id="dw_box" class="pure-u-1-3">
+								<h3>Day-Week Conversions</h3>
+									<table id="day-week-ref" class="pure-table pure-table-bordered">
+									<thead>
+										<th>Days</th>
+										<th>Weeks</th>
+									</thead>
+									<tr>
+										<td>1 Day</td>
+										<td>.14286 Weeks</td>
+									</tr>
+									<tr>
+										<td>2 Days</td>
+										<td>.28571 Weeks</td>
+									</tr>
+									<tr>
+										<td>3 Days</td>
+										<td>.42857 Weeks</td>
+									</tr>
+									<tr>
+										<td>4 Days</td>
+										<td>.57143 Weeks</td>
+									</tr>
+									<tr>
+										<td>5 Days</td>
+										<td>.71429 Weeks</td>
+									</tr>
+									<tr>
+										<td>6 Days</td>
+										<td>.85714 Weeks</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>  <!-- End of NEW reference div -->
+
+					<div id="Container">
             <div id="Calculator" style="width: 900px;">
-                <h1>Calculate COLA Amounts</h1>
+							<h1>Calculate Cost of Living Adjustment (COLA)</h1>
                 <form id="cola_calculator">
                     <div id="cola-inputs">
                         <span><strong>Enter Benefit Information</strong></span><br>
@@ -170,7 +232,7 @@
                 </div>
 
                 <br><br>
-               
+
                 <table id="cola-table">
                     <thead>
                         <tr><th>Rate Year</th>
@@ -202,6 +264,12 @@
                 </table>
             </div>
         </div>
+
+				<!-- New footer for redesign -->
+				<div id="footer">
+					<p>&copy 2014 Virginia Workers' Compensation Commission</p>
+					<p><a href="http://www.vwc.state.va.us">VWC Public Website</a></p>
+				</div>
 
 </body>
 </html>
